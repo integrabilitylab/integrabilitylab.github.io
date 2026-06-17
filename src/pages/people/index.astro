@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PersonCard from "../../components/PersonCard.astro";
+
+const people = (await getCollection("people")).sort(
+  (a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name),
+);
+---
+
+<BaseLayout title="People">
+  <section class="container page">
+    <p class="eyebrow">Members</p>
+    <h1 class="page-title">People</h1>
+    <p class="lead">Members, visitors, and collaborators of the lab.</p>
+
+    <div class="grid two section">
+      {people.map((person) => <PersonCard person={person} />)}
+    </div>
+  </section>
+</BaseLayout>

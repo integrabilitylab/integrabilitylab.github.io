@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ContentList from "../../components/ContentList.astro";
+
+const news = (await getCollection("news")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<BaseLayout title="News">
+  <section class="container page">
+    <p class="eyebrow">Updates</p>
+    <h1 class="page-title">News</h1>
+    <p class="lead">Announcements and updates from the lab.</p>
+
+    <div class="section">
+      <ContentList items={news} />
+    </div>
+  </section>
+</BaseLayout>

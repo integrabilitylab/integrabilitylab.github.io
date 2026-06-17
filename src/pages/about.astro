@@ -1,0 +1,18 @@
+---
+import ContentLayout from "../layouts/ContentLayout.astro";
+import PartnerList from "../components/PartnerList.astro";
+import { site } from "../data/site";
+---
+
+<ContentLayout title="About" description={site.description}>
+  <p>
+    Integrability Lab studies integrable systems, mathematical physics, and
+    related structures in quantum field theory and statistical mechanics.
+  </p>
+
+  <h2 id="contact">Contact</h2>
+  <p>Add the lab address, contact email, and visiting information here.</p>
+
+  <h2>Partners</h2>
+  <PartnerList />
+</ContentLayout>

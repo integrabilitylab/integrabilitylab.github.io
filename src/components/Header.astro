@@ -1,0 +1,69 @@
+---
+import { site } from "../data/site";
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">{site.name}</a>
+    <nav aria-label="Primary navigation">
+      {
+        site.nav.map((item) => (
+          <a href={item.href} aria-current={Astro.url.pathname === item.href ? "page" : undefined}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .header-inner {
+    display: flex;
+    min-height: 72px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand {
+    color: var(--text);
+    font-size: 1.05rem;
+    font-weight: 800;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: flex-end;
+  }
+
+  nav a {
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  nav a[aria-current="page"] {
+    color: var(--accent-strong);
+  }
+
+  @media (max-width: 720px) {
+    .header-inner {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 12px;
+      padding-block: 18px;
+    }
+
+    nav {
+      justify-content: flex-start;
+    }
+  }
+</style>

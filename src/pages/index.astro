@@ -1,0 +1,57 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ContentList from "../components/ContentList.astro";
+import EventItem from "../components/EventItem.astro";
+import PartnerList from "../components/PartnerList.astro";
+import { site } from "../data/site";
+
+const news = (await getCollection("news"))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const events = (await getCollection("events"))
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout title="Home" description={site.description}>
+  <section class="container hero">
+    <p class="eyebrow">Research Group</p>
+    <h1 class="page-title">{site.name}</h1>
+    <p class="lead">{site.description}</p>
+  </section>
+
+  <section class="container section">
+    <h2>News</h2>
+    <ContentList items={news} />
+  </section>
+
+  <section class="container section">
+    <h2>Events</h2>
+    <div class="stack">
+      {events.map((event) => <EventItem item={event} />)}
+    </div>
+  </section>
+
+  <section class="container section partners">
+    <h2>Partners</h2>
+    <PartnerList />
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: 72px 32px;
+  }
+
+  h2 {
+    margin: 0 0 16px;
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+
+  .partners {
+    padding-bottom: 72px;
+  }
+</style>

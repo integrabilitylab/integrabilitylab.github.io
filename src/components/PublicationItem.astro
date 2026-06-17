@@ -1,0 +1,35 @@
+---
+interface Props {
+  publication: {
+    id: string;
+    data: {
+      title: string;
+      authors: string[];
+      year: number;
+      venue?: string;
+      summary?: string;
+    };
+  };
+}
+
+const { publication } = Astro.props;
+---
+
+<article class="card">
+  <h2><a href={`/publications/${publication.id}/`}>{publication.data.title}</a></h2>
+  <p class="meta">{publication.data.authors.join(", ")} · {publication.data.year}</p>
+  {publication.data.venue && <p class="meta">{publication.data.venue}</p>}
+  {publication.data.summary && <p>{publication.data.summary}</p>}
+</article>
+
+<style>
+  h2 {
+    margin: 0;
+    font-size: 1.12rem;
+    line-height: 1.3;
+  }
+
+  p {
+    margin: 8px 0 0;
+  }
+</style>

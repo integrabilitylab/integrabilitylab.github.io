@@ -1,0 +1,25 @@
+---
+import { getCollection, render } from "astro:content";
+import ContentLayout from "../../layouts/ContentLayout.astro";
+
+export async function getStaticPaths() {
+  const news = await getCollection("news");
+  return news.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const { Content } = await render(item);
+const date = item.data.date.toLocaleDateString("en", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<ContentLayout title={item.data.title} description={item.data.summary} eyebrow={date}>
+  {item.data.image && <img src={item.data.image} alt="" />}
+  <Content />
+</ContentLayout>

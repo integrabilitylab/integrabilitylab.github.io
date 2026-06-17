@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PublicationItem from "../../components/PublicationItem.astro";
+
+const publications = (await getCollection("publications")).sort(
+  (a, b) => b.data.year - a.data.year || a.data.order - b.data.order,
+);
+---
+
+<BaseLayout title="Publications">
+  <section class="container page">
+    <p class="eyebrow">Research Output</p>
+    <h1 class="page-title">Publications</h1>
+    <p class="lead">Selected papers and preprints from the lab.</p>
+
+    <div class="stack section">
+      {publications.map((publication) => <PublicationItem publication={publication} />)}
+    </div>
+  </section>
+</BaseLayout>

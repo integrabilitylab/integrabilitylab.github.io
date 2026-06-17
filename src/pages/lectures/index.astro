@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import EventItem from "../../components/EventItem.astro";
+
+const lectures = (await getCollection("lectures")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<BaseLayout title="Lectures">
+  <section class="container page">
+    <p class="eyebrow">Teaching</p>
+    <h1 class="page-title">Lectures</h1>
+    <p class="lead">Lecture series, notes, slides, and recordings.</p>
+
+    <div class="stack section">
+      {lectures.map((lecture) => <EventItem item={lecture} />)}
+    </div>
+  </section>
+</BaseLayout>

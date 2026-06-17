@@ -1,0 +1,27 @@
+---
+import { getCollection, render } from "astro:content";
+import ContentLayout from "../../layouts/ContentLayout.astro";
+
+export async function getStaticPaths() {
+  const publications = await getCollection("publications");
+  return publications.map((publication) => ({
+    params: { slug: publication.id },
+    props: { publication },
+  }));
+}
+
+const { publication } = Astro.props;
+const { Content } = await render(publication);
+---
+
+<ContentLayout
+  title={publication.data.title}
+  description={publication.data.summary}
+  eyebrow={`${publication.data.year}`}
+>
+  <p class="meta">{publication.data.authors.join(", ")}</p>
+  {publication.data.venue && <p>{publication.data.venue}</p>}
+  {publication.data.arxiv && <p>arXiv: <a href={publication.data.arxiv}>{publication.data.arxiv}</a></p>}
+  {publication.data.doi && <p>DOI: {publication.data.doi}</p>}
+  <Content />
+</ContentLayout>

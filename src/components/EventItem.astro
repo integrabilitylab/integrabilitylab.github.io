@@ -1,0 +1,42 @@
+---
+interface Props {
+  item: {
+    id: string;
+    collection: string;
+    data: {
+      title: string;
+      date: Date;
+      summary?: string;
+      location?: string;
+      speaker?: string;
+    };
+  };
+}
+
+const { item } = Astro.props;
+const href = `/${item.collection}/${item.id}/`;
+const date = item.data.date.toLocaleDateString("en", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+<article class="card">
+  <p class="meta">{date}{item.data.location ? ` · ${item.data.location}` : ""}</p>
+  <h2><a href={href}>{item.data.title}</a></h2>
+  {item.data.speaker && <p class="meta">{item.data.speaker}</p>}
+  {item.data.summary && <p>{item.data.summary}</p>}
+</article>
+
+<style>
+  h2 {
+    margin: 4px 0 0;
+    font-size: 1.12rem;
+    line-height: 1.3;
+  }
+
+  p {
+    margin: 8px 0 0;
+  }
+</style>

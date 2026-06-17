@@ -1,0 +1,47 @@
+---
+interface Props {
+  items: Array<{
+    id: string;
+    collection: string;
+    data: {
+      title: string;
+      date?: Date;
+      summary?: string;
+    };
+  }>;
+}
+
+const { items } = Astro.props;
+---
+
+<div class="stack">
+  {
+    items.map((item) => (
+      <article class="card">
+        {item.data.date && (
+          <p class="meta">
+            {item.data.date.toLocaleDateString("en", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })}
+          </p>
+        )}
+        <h2><a href={`/${item.collection}/${item.id}/`}>{item.data.title}</a></h2>
+        {item.data.summary && <p>{item.data.summary}</p>}
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  h2 {
+    margin: 4px 0 0;
+    font-size: 1.12rem;
+    line-height: 1.3;
+  }
+
+  p {
+    margin: 8px 0 0;
+  }
+</style>

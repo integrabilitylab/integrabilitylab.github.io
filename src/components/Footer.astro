@@ -1,0 +1,44 @@
+---
+import { site } from "../data/site";
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>&copy; {new Date().getFullYear()} {site.name}</p>
+    <nav aria-label="Footer navigation">
+      {site.footer.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 28px;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  nav {
+    display: flex;
+    gap: 14px;
+  }
+
+  @media (max-width: 640px) {
+    .footer-inner {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

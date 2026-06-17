@@ -1,0 +1,57 @@
+---
+interface Props {
+  person: {
+    id: string;
+    data: {
+      name: string;
+      role: string;
+      avatar?: string;
+      interests?: string[];
+    };
+  };
+}
+
+const { person } = Astro.props;
+---
+
+<article class="card person-card">
+  {
+    person.data.avatar && (
+      <img src={person.data.avatar} alt={`${person.data.name} portrait`} width="96" height="96" />
+    )
+  }
+  <div>
+    <h2><a href={`/people/${person.id}/`}>{person.data.name}</a></h2>
+    <p class="meta">{person.data.role}</p>
+    {
+      person.data.interests && person.data.interests.length > 0 && (
+        <p>{person.data.interests.join(", ")}</p>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .person-card {
+    display: flex;
+    gap: 16px;
+  }
+
+  img {
+    width: 72px;
+    height: 72px;
+    flex: 0 0 auto;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    line-height: 1.25;
+  }
+
+  p {
+    margin: 6px 0 0;
+  }
+</style>

@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from "astro:content";
+import ContentLayout from "../../layouts/ContentLayout.astro";
+
+export async function getStaticPaths() {
+  const people = await getCollection("people");
+  return people.map((person) => ({
+    params: { slug: person.id },
+    props: { person },
+  }));
+}
+
+const { person } = Astro.props;
+const { Content } = await render(person);
+---
+
+<ContentLayout title={person.data.name} description={person.data.role} eyebrow="People">
+  {
+    person.data.avatar && (
+      <img class="portrait" src={person.data.avatar} alt={`${person.data.name} portrait`} />
+    )
+  }
+  <p class="meta">{person.data.role}</p>
+  {person.data.email && <p>Email: <a href={`mailto:${person.data.email}`}>{person.data.email}</a></p>}
+  {person.data.website && <p>Website: <a href={person.data.website}>{person.data.website}</a></p>}
+  {
+    person.data.interests.length > 0 && (
+      <p>Research interests: {person.data.interests.join(", ")}</p>
+    )
+  }
+  <Content />
+</ContentLayout>
+
+<style>
+  .portrait {
+    width: 160px;
+    height: 160px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+</style>

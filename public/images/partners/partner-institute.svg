@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="80" viewBox="0 0 160 80" role="img" aria-label="Partner Institute logo">
+  <rect width="160" height="80" rx="8" fill="#ffffff"/>
+  <rect x="12" y="12" width="56" height="56" rx="8" fill="#0f766e"/>
+  <path d="M28 52h24L40 28z" fill="#ffffff"/>
+  <text x="80" y="36" fill="#1f2933" font-family="Arial, sans-serif" font-size="14" font-weight="700">Partner</text>
+  <text x="80" y="54" fill="#667085" font-family="Arial, sans-serif" font-size="12">Institute</text>
+</svg>

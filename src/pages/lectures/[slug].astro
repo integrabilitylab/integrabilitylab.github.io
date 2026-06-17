@@ -1,0 +1,29 @@
+---
+import { getCollection, render } from "astro:content";
+import ContentLayout from "../../layouts/ContentLayout.astro";
+
+export async function getStaticPaths() {
+  const lectures = await getCollection("lectures");
+  return lectures.map((lecture) => ({
+    params: { slug: lecture.id },
+    props: { lecture },
+  }));
+}
+
+const { lecture } = Astro.props;
+const { Content } = await render(lecture);
+const date = lecture.data.date.toLocaleDateString("en", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+---
+
+<ContentLayout title={lecture.data.title} description={lecture.data.summary} eyebrow={date}>
+  {lecture.data.speaker && <p class="meta">Speaker: {lecture.data.speaker}</p>}
+  {lecture.data.location && <p class="meta">Location: {lecture.data.location}</p>}
+  {lecture.data.slides && <p>Slides: <a href={lecture.data.slides}>{lecture.data.slides}</a></p>}
+  {lecture.data.video && <p>Video: <a href={lecture.data.video}>{lecture.data.video}</a></p>}
+  {lecture.data.image && <img src={lecture.data.image} alt="" />}
+  <Content />
+</ContentLayout>
