@@ -1,6 +1,6 @@
 export const site = {
-  name: "Integrability Lab",
-  description: "Research group on integrable systems and mathematical physics.",
+  name: "量子可积实验室 (Laboratory of Quantum Integrability)",
+  description: "make integrability great again",
   nav: [
     { label: "Home", href: "/" },
     { label: "People", href: "/people/" },
