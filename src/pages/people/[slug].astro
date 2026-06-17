@@ -22,10 +22,19 @@ const { Content } = await render(person);
   }
   <p class="meta">{person.data.role}</p>
   {person.data.email && <p>Email: <a href={`mailto:${person.data.email}`}>{person.data.email}</a></p>}
-  {person.data.website && <p>Website: <a href={person.data.website}>{person.data.website}</a></p>}
+  {
+    person.data.website && (
+      <p>Website: <a href={person.data.website}>YAUC Central profile</a></p>
+    )
+  }
   {
     person.data.interests.length > 0 && (
-      <p>Research interests: {person.data.interests.join(", ")}</p>
+      <>
+        <p>Research interests:</p>
+        <ul>
+          {person.data.interests.map((interest) => <li>{interest}</li>)}
+        </ul>
+      </>
     )
   }
   <Content />

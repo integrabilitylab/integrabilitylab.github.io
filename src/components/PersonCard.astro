@@ -25,7 +25,9 @@ const { person } = Astro.props;
     <p class="meta">{person.data.role}</p>
     {
       person.data.interests && person.data.interests.length > 0 && (
-        <p>{person.data.interests.join(", ")}</p>
+        <ul>
+          {person.data.interests.map((interest) => <li>{interest}</li>)}
+        </ul>
       )
     }
   </div>
@@ -53,5 +55,14 @@ const { person } = Astro.props;
 
   p {
     margin: 6px 0 0;
+  }
+
+  ul {
+    margin: 8px 0 0;
+    padding-left: 18px;
+  }
+
+  li {
+    margin: 2px 0;
   }
 </style>

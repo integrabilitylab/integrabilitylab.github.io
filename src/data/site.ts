@@ -1,5 +1,5 @@
 export const site = {
-  name: "量子可积实验室 (Laboratory of Quantum Integrability)",
+  name: "Laboratory of Quantum Integrability",
   description: "make integrability great again",
   nav: [
     { label: "Home", href: "/" },
