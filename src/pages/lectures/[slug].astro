@@ -17,13 +17,47 @@ const date = lecture.data.date.toLocaleDateString("en", {
   month: "long",
   day: "numeric",
 });
+const videos = [
+  ...(lecture.data.video ? [{ title: "Video", url: lecture.data.video }] : []),
+  ...lecture.data.videos,
+];
 ---
 
 <ContentLayout title={lecture.data.title} description={lecture.data.summary} eyebrow={date}>
   {lecture.data.speaker && <p class="meta">Speaker: {lecture.data.speaker}</p>}
   {lecture.data.location && <p class="meta">Location: {lecture.data.location}</p>}
   {lecture.data.slides && <p>Slides: <a href={lecture.data.slides}>{lecture.data.slides}</a></p>}
-  {lecture.data.video && <p>Video: <a href={lecture.data.video}>{lecture.data.video}</a></p>}
+  {
+    videos.length > 0 && (
+      <section class="recordings" aria-labelledby="recordings-title">
+        <h2 id="recordings-title">Recordings</h2>
+        <ul class="recording-list">
+          {videos.map((video) => (
+            <li>
+              <a href={video.url}>{video.title}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
   {lecture.data.image && <img src={lecture.data.image} alt="" />}
   <Content />
 </ContentLayout>
+
+<style>
+  .recordings {
+    margin-block: 1.5rem;
+  }
+
+  .recordings h2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .recording-list {
+    display: grid;
+    gap: 0.65rem;
+    margin: 0;
+    padding-left: 1.25rem;
+  }
+</style>

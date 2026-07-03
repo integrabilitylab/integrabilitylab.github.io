@@ -56,6 +56,14 @@ const lectures = defineCollection({
     location: z.string().optional(),
     slides: z.string().url().optional(),
     video: z.string().url().optional(),
+    videos: z
+      .array(
+        z.object({
+          title: z.string(),
+          url: z.string().url(),
+        }),
+      )
+      .default([]),
   }),
 });
 
