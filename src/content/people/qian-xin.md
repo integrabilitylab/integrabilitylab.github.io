@@ -1,6 +1,7 @@
 ---
 name: "QIAN Xin"
 role: "Postdoctoral Researcher"
+category: "postdocs"
 avatar: "/images/people/qian-xin.png"
 email: "xinqian@seu.edu.cn"
 interests:
