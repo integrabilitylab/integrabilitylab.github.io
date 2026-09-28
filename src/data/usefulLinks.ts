@@ -10,12 +10,18 @@ export const usefulLinks = [
     name: "东南大学物理学院",
     url: "https://physics.seu.edu.cn/mainm.htm",
     domain: "physics.seu.edu.cn",
-    logo: "/images/links/physics.png",
+    logo: "/images/links/southeast-university.svg",
   },
   {
     name: "东南大学",
     url: "https://www.seu.edu.cn/",
     domain: "www.seu.edu.cn",
-    logo: "/images/links/seu.png",
+    logo: "/images/links/southeast-university.svg",
+  },
+  {
+    name: "Yang Zhang@USTC",
+    url: "http://staff.ustc.edu.cn/~yzhphy/index.html",
+    domain: "staff.ustc.edu.cn/~yzhphy",
+    logo: "/images/links/ustc-yang-zhang.ico",
   },
 ];

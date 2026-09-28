@@ -7,10 +7,12 @@ interface Props {
       title: string;
       date?: Date;
       summary?: string;
+      location?: string;
     };
   }>;
 }
 
+import InlineMathText from "./InlineMathText.astro";
 const { items } = Astro.props;
 ---
 
@@ -24,11 +26,11 @@ const { items } = Astro.props;
               year: "numeric",
               month: "short",
               day: "numeric",
-            })}
+            })}{item.data.location ? ` · ${item.data.location}` : ""}
           </p>
         )}
-        <h2><a href={`/${item.collection}/${item.id}/`}>{item.data.title}</a></h2>
-        {item.data.summary && <p>{item.data.summary}</p>}
+        <h2><a href={`/${item.collection}/${item.id}/`}><InlineMathText text={item.data.title} /></a></h2>
+        {item.data.summary && <p><InlineMathText text={item.data.summary} /></p>}
       </article>
     ))
   }

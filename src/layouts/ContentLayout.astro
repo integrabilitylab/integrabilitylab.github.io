@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+import InlineMathText from "../components/InlineMathText.astro";
 
 interface Props {
   title: string;
@@ -13,10 +14,24 @@ const { title, description, eyebrow } = Astro.props;
 <BaseLayout title={title} description={description}>
   <article class="container page reading-page">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
-    <h1 class="page-title">{title}</h1>
-    {description && <p class="lead">{description}</p>}
+    <h1 class="page-title"><InlineMathText text={title} /></h1>
+    {description && <p class="lead"><InlineMathText text={description} /></p>}
     <div class="prose section">
       <slot />
     </div>
   </article>
 </BaseLayout>
+<style is:global>
+  .math {
+    display: inline-block;
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+    letter-spacing: -0.04em;
+  }
+
+  .math-overline {
+    text-decoration: overline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.08em;
+  }
+</style>
