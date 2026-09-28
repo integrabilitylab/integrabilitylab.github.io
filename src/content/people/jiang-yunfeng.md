@@ -1,12 +1,14 @@
 ---
 name: "JIANG Yunfeng"
 role: "Professor and Principal Investigator"
+category: faculty
+avatar: "/images/people/jiang-yunfeng.png"
 email: "jinagyf2008@seu.edu.cn"
 website: "https://yauc.seu.edu.cn/Jiang%20Yunfeng_en/list.psp"
 interests:
   - Integrable models
   - AdS/CFT correspondence
-  - TTbar deformations
+  - '$T\overline{T}$ deformations'
   - Bethe ansatz
 order: 1
 ---
@@ -18,7 +20,7 @@ JIANG Yunfeng is a professor at the Shing-Tung Yau Center and School of Physics,
 My main research interests are integrable models and their applications in physics, ranging from high energy physics to condensed matter physics. In the past few years, my researches are centered around the following themes:
 
 1. **Integrability in AdS/CFT correspondence.** I'm particularly interested in developing non-perturbative methods to compute OPE coefficients of higher dimensional gauge fields such as the maximally supersymmetric Yang-Mills theory in 4D and ABJM theory in 3D.
-2. **TTbar and other solvable irrelevant deformations.** I'm interested in such deformations for both relativistic quantum field theories and more general physical systems such as the cold atom and integrable spin chains.
+2. **<math aria-label="T T-bar"><mi>T</mi><mover accent="true"><mi>T</mi><mo>¯</mo></mover></math> and other solvable irrelevant deformations.** I'm interested in such deformations for both relativistic quantum field theories and more general physical systems such as the cold atom and integrable spin chains.
 3. **Computational algebraic geometry and Bethe ansatz.** Using powerful methods from algebraic geometry, we are developing novel techniques to compute physical quantities analytically for finite size spin chains. The method can be applied in a broad context.
 
 ## Employment

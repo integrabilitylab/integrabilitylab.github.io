@@ -6,16 +6,44 @@ import PersonCard from "../../components/PersonCard.astro";
 const people = (await getCollection("people")).sort(
   (a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name),
 );
+const groups = [
+  { id: "faculty", title: "Faculty" },
+  { id: "postdocs", title: "Postdocs" },
+  { id: "students", title: "Students" },
+  { id: "alumni", title: "Alumni" },
+] as const;
 ---
 
 <BaseLayout title="People">
   <section class="container page">
     <p class="eyebrow">Members</p>
     <h1 class="page-title">People</h1>
-    <p class="lead">Members, visitors, and collaborators of the lab.</p>
-
-    <div class="grid two section">
-      {people.map((person) => <PersonCard person={person} />)}
-    </div>
+    <p class="lead">Faculty, postdocs, students, and alumni of the lab.</p>
+    <nav class="people-nav" aria-label="People categories">
+      {groups.map(group => <a href={`#${group.id}`}>{group.title}<span aria-hidden="true">↗</span></a>)}
+    </nav>
+    {groups.map((group, index) => {
+      const members = people.filter(person => person.data.category === group.id);
+      return (
+        <section class="people-group" id={group.id} aria-labelledby={`${group.id}-title`}>
+          <h2 id={`${group.id}-title`} class="group-title"><span aria-hidden="true">0{index + 1}</span>{group.title}</h2>
+          {members.length > 0 ? (
+            <div class="grid two">{members.map(person => <PersonCard person={person} />)}</div>
+          ) : (
+            <p class="empty-group">Member profiles will be added soon.</p>
+          )}
+        </section>
+      );
+    })}
   </section>
 </BaseLayout>
+
+<style>
+  .people-nav { display:flex; flex-wrap:wrap; gap:12px 32px; border-bottom:1px solid var(--border); padding-block:16px 24px; margin-top:24px; }
+  .people-nav a { display:flex; gap:24px; align-items:center; font-size:.9rem; }
+  .people-nav span { color:var(--muted); }
+  .people-group { margin-top:44px; scroll-margin-top:24px; }
+  .group-title { display:flex; gap:18px; align-items:baseline; margin:0 0 22px; font:normal 30px/1.2 Georgia,serif; }
+  .group-title span { color:var(--muted); font:11px ui-monospace,monospace; }
+  .empty-group { margin:0; padding:24px; border:1px dashed var(--border); color:var(--muted); font-size:.95rem; }
+</style>

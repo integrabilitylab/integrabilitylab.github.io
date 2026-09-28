@@ -1,50 +1,43 @@
 ---
 import { getCollection, render } from "astro:content";
-import ContentLayout from "../../layouts/ContentLayout.astro";
-
+import InlineMathText from "../../components/InlineMathText.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
 export async function getStaticPaths() {
-  const people = await getCollection("people");
-  return people.map((person) => ({
-    params: { slug: person.id },
-    props: { person },
-  }));
+  return (await getCollection("people")).map(person => ({ params: { slug: person.id }, props: { person } }));
 }
-
 const { person } = Astro.props;
-const { Content } = await render(person);
+const { Content, headings } = await render(person);
+const sections = headings.filter(heading => heading.depth === 2);
 ---
+<BaseLayout title={person.data.name} description={person.data.role}>
+  <article class="container page profile">
+    <a class="eyebrow profile-back" href="/people/">← People</a>
+    <header class="profile-heading">
+      {person.data.avatar && <img class="profile-portrait" src={person.data.avatar} alt={`${person.data.name} portrait`} width="159" height="238" />}
+      <div class="profile-heading-copy">
+        <p class="profile-category">{{ faculty: "Faculty", postdocs: "Postdoc", students: "Student", alumni: "Alumni" }[person.data.category]}</p>
+        <h1 class="page-title">{person.data.name}</h1>
+      <p class="lead">{person.data.role}</p>
+      </div>
 
-<ContentLayout title={person.data.name} description={person.data.role} eyebrow="People">
-  {
-    person.data.avatar && (
-      <img class="portrait" src={person.data.avatar} alt={`${person.data.name} portrait`} />
-    )
-  }
-  <p class="meta">{person.data.role}</p>
-  {person.data.email && <p>Email: <a href={`mailto:${person.data.email}`}>{person.data.email}</a></p>}
-  {
-    person.data.website && (
-      <p>Website: <a href={person.data.website}>YAUC Central profile</a></p>
-    )
-  }
-  {
-    person.data.interests.length > 0 && (
-      <>
-        <p>Research interests:</p>
-        <ul>
-          {person.data.interests.map((interest) => <li>{interest}</li>)}
-        </ul>
-      </>
-    )
-  }
-  <Content />
-</ContentLayout>
-
-<style>
-  .portrait {
-    width: 160px;
-    height: 160px;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-</style>
+    </header>
+    <div class="profile-grid">
+      <aside aria-label="Profile information">
+        {(person.data.email || person.data.website) && <div class="info-section">
+          <h2>Contact</h2>
+          {person.data.email && <a class="contact-link" href={`mailto:${person.data.email}`}>{person.data.email}</a>}
+          {person.data.website && <a class="contact-link" href={person.data.website}>Institutional profile ↗</a>}
+        </div>}
+        {person.data.interests.length > 0 && <div class="info-section">
+          <h2>Research interests</h2>
+          <ul class="interests">{person.data.interests.map(interest => <li><InlineMathText text={interest} /></li>)}</ul>
+        </div>}
+        {sections.length > 0 && <nav class="info-section contents" aria-label="On this page">
+          <h2>On this page</h2>
+          {sections.map(heading => <a href={`#${heading.slug}`}>{heading.text}</a>)}
+        </nav>}
+      </aside>
+      <div class="prose profile-body"><Content /></div>
+    </div>
+  </article>
+</BaseLayout>
