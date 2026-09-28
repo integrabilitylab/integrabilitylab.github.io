@@ -1,5 +1,16 @@
 ---
 import { site } from "../data/site";
+
+const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const navigation = site.nav.map((item) => {
+  const path = item.href.replace(/\/+$/, "") || "/";
+  const current = pathname === path
+    ? "page"
+    : path !== "/" && pathname.startsWith(`${path}/`)
+      ? "location"
+      : undefined;
+  return { ...item, current };
+});
 ---
 
 <header class="site-header">
@@ -7,8 +18,8 @@ import { site } from "../data/site";
     <a class="brand" href="/">{site.name}</a>
     <nav aria-label="Primary navigation">
       {
-        site.nav.map((item) => (
-          <a href={item.href} aria-current={Astro.url.pathname === item.href ? "page" : undefined}>
+        navigation.map((item) => (
+          <a href={item.href} aria-current={item.current}>
             {item.label}
           </a>
         ))
@@ -45,13 +56,22 @@ import { site } from "../data/site";
   }
 
   nav a {
+    padding-block: 8px;
+    border-bottom: 2px solid transparent;
     color: var(--muted);
     font-size: 0.85rem;
     font-weight: 600;
   }
 
-  nav a[aria-current="page"] {
+  nav a[aria-current] {
     color: var(--accent-strong);
+    border-bottom-color: var(--accent);
+  }
+
+  nav a:hover {
+    color: var(--accent-strong);
+    text-decoration: none;
+    border-bottom-color: var(--accent);
   }
 
   @media (max-width: 720px) {

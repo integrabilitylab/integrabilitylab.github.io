@@ -11,7 +11,7 @@ const { title, description, eyebrow } = Astro.props;
 ---
 
 <BaseLayout title={title} description={description}>
-  <article class="container page">
+  <article class="container page reading-page">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h1 class="page-title">{title}</h1>
     {description && <p class="lead">{description}</p>}

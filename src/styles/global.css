@@ -178,3 +178,29 @@ a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
 @media (max-width: 380px) {
   .profile .profile-heading { flex-direction: column; align-items: flex-start; }
 }
+
+/* Shared editorial lists and centered detail pages. */
+.content-entry { padding: 24px 0; border-top: 1px solid var(--border); }
+.content-entry > :first-child { margin-top: 0; }
+.content-entry > p:last-child { margin-bottom: 0; }
+.content-entry h2 { max-width:  52ch; }
+.container.reading-page { width: min(960px, calc(100% - 40px)); margin-inline: auto; }
+.reading-page > .lead { max-width: none; }
+.reading-page > .prose { width: 100%; max-width: none; }
+.reading-page > .page-title { text-wrap: balance; }
+
+/* Dates and appointments stay aligned without constraining the prose column. */
+.prose .career-timeline { margin: 0 0 2em; }
+.career-entry { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 32px; padding-block: 22px; }
+.career-entry + .career-entry { border-top: 1px solid var(--border); }
+.career-entry dt { padding-top: 3px; color: var(--muted); font-size: .85rem; line-height: 1.7; font-variant-numeric: tabular-nums; }
+.career-entry dt time { white-space: nowrap; }
+.career-entry dd { margin: 0; min-width: 0; }
+.prose .career-entry p { margin: 0; }
+.prose .career-entry p + p { margin-top: 4px; }
+.career-role { font-weight: 600; color: var(--accent-strong); }
+.career-entry .career-location { color: var(--muted); font-size: .9rem; }
+@media (max-width: 600px) {
+  .career-entry { grid-template-columns: 1fr; gap: 8px; padding-block: 20px; }
+  .career-entry dt { padding-top: 0; }
+}

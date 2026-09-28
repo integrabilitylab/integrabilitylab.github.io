@@ -15,7 +15,7 @@ interface Props {
 const { publication } = Astro.props;
 ---
 
-<article class="card">
+<article class="content-entry">
   <h2><a href={`/publications/${publication.id}/`}>{publication.data.title}</a></h2>
   <p class="meta">{publication.data.authors.join(", ")} · {publication.data.year}</p>
   {publication.data.venue && <p class="meta">{publication.data.venue}</p>}
