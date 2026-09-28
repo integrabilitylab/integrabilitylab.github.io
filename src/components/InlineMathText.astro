@@ -1,0 +1,6 @@
+---
+interface Props { text: string; }
+const { text } = Astro.props;
+const parts = text.split('$T\\overline{T}$');
+---
+{parts.map((part, index) => <>{index > 0 && <math aria-label="T T-bar"><mi>T</mi><mover accent="true"><mi>T</mi><mo>¯</mo></mover></math>}{part}</>)}

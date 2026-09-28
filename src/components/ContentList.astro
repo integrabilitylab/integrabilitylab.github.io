@@ -17,7 +17,7 @@ const { items } = Astro.props;
 <div class="stack">
   {
     items.map((item) => (
-      <article class="card">
+      <article class="content-entry">
         {item.data.date && (
           <p class="meta">
             {item.data.date.toLocaleDateString("en", {

@@ -6,6 +6,7 @@ const people = defineCollection({
   schema: z.object({
     name: z.string(),
     role: z.string(),
+    category: z.enum(["faculty", "postdocs", "students", "alumni"]),
     avatar: z.string().optional(),
     email: z.string().email().optional(),
     website: z.string().url().optional(),
@@ -56,6 +57,14 @@ const lectures = defineCollection({
     location: z.string().optional(),
     slides: z.string().url().optional(),
     video: z.string().url().optional(),
+    videos: z
+      .array(
+        z.object({
+          title: z.string(),
+          url: z.string().url(),
+        }),
+      )
+      .default([]),
   }),
 });
 

@@ -1,0 +1,27 @@
+---
+import { usefulLinks } from "../data/usefulLinks";
+---
+<ul class="useful-links">
+  {usefulLinks.map((link) => (
+    <li>
+      <a href={link.url}>
+        <span class="logo"><img src={link.logo} alt="" width="56" height="56" loading="lazy" /></span>
+        <span class="link-copy"><span class="name" lang="zh-CN">{link.name}</span><span class="domain">{link.domain}</span></span>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>
+    </li>
+  ))}
+</ul>
+<style>
+  .useful-links { list-style:none; margin:0 0 48px; padding:0; display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); }
+  li { min-width:0; }
+  a { display:flex; align-items:center; gap:16px; height:100%; min-height:112px; padding:22px; border:1px solid var(--border); background:var(--surface); color:var(--text); transition:border-color .18s, background .18s; }
+  a:hover { border-color:var(--accent); background:#f0f3eb; text-decoration:none; }
+  .logo { flex:0 0 56px; }
+  img { width:56px; height:56px; object-fit:contain; border-radius:50%; }
+  .link-copy { min-width:0; display:grid; gap:6px; }
+  .name { font-size:.95rem; font-weight:600; overflow-wrap:anywhere; }
+  .domain { font:11px/1.5 ui-monospace,monospace; color:var(--muted); overflow-wrap:anywhere; }
+  .arrow { margin-left:auto; color:var(--accent); }
+  @media(prefers-reduced-motion:reduce) { a { transition:none; } }
+</style>
