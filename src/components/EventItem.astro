@@ -22,7 +22,7 @@ const date = item.data.date.toLocaleDateString("en", {
 });
 ---
 
-<article class="card">
+<article class="content-entry">
   <p class="meta">{date}{item.data.location ? ` · ${item.data.location}` : ""}</p>
   <h2><a href={href}>{item.data.title}</a></h2>
   {item.data.speaker && <p class="meta">{item.data.speaker}</p>}
