@@ -1,6 +1,6 @@
 export const site = {
   name: "Laboratory of Quantum Integrability",
-  description: "make integrability great again",
+  description: "In a chaotic world, we seek integrable laws.",
   nav: [
     { label: "Home", href: "/" },
     { label: "People", href: "/people/" },
