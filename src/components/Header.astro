@@ -4,7 +4,7 @@ import { site } from "../data/site";
 const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const navigation = site.nav.map((item) => {
   const path = item.href.replace(/\/+$/, "") || "/";
-  const current = pathname === path
+  const current: "page" | "location" | undefined = pathname === path
     ? "page"
     : path !== "/" && pathname.startsWith(`${path}/`)
       ? "location"
@@ -87,3 +87,4 @@ const navigation = site.nav.map((item) => {
     }
   }
 </style>
+
