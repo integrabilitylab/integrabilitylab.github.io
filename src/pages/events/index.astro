@@ -1,6 +1,17 @@
 ---
-const destination = "/news/#events";
+const destination = "/news/#updates";
 ---
 
-<meta http-equiv="refresh" content={`0;url=${destination}`} />
-<p>Events are now listed with <a href={destination}>News & Events</a>.</p>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="refresh" content={`0;url=${destination}`} />
+    <link rel="canonical" href={new URL("/news/", Astro.site)} />
+    <title>News & Events | Laboratory of Quantum Integrability</title>
+  </head>
+  <body>
+    <p>Events are now listed with <a href={destination}>News & Events</a>.</p>
+  </body>
+</html>

@@ -9,6 +9,7 @@ venue: "Physical Review Letters 135, 081601 (2025)"
 summary: "A resurgence analysis of the $T\\overline{T}$-deformed partition function and its non-perturbative structure."
 arxiv: "https://arxiv.org/abs/2410.19633"
 doi: "10.1103/nlmd-b57j"
+inspireId: 2842850
 order: 2
 ---
 

@@ -5,7 +5,7 @@ export const site = {
     { label: "Home", href: "/" },
     { label: "People", href: "/people/" },
     { label: "Publications", href: "/publications/" },
-    { label: "News", href: "/news/" },
+    { label: "News & Events", href: "/news/" },
     { label: "Lectures", href: "/lectures/" },
     { label: "About", href: "/about/" },
   ],

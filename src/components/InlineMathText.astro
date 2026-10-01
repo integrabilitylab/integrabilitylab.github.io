@@ -1,6 +1,7 @@
 ---
+import { splitInlineMath, renderInlineMath } from "../utils/math";
 interface Props { text: string; }
 const { text } = Astro.props;
-const parts = text.split('$T\\overline{T}$');
+const parts = splitInlineMath(text);
 ---
-{parts.map((part, index) => <>{index > 0 && <math aria-label="T T-bar"><mi>T</mi><mover accent="true"><mi>T</mi><mo>¯</mo></mover></math>}{part}</>)}
+{parts.map((part) => part.type === "math" ? <Fragment set:html={renderInlineMath(part.value)} /> : part.value)}

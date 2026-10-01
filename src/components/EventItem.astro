@@ -1,9 +1,12 @@
 ---
+import InlineMathText from "./InlineMathText.astro";
+import { formatDate } from "../utils/date";
 interface Props {
   item: {
     id: string;
     collection: string;
     data: {
+      language?: "en" | "zh-CN";
       title: string;
       date: Date;
       summary?: string;
@@ -15,18 +18,14 @@ interface Props {
 
 const { item } = Astro.props;
 const href = `/${item.collection}/${item.id}/`;
-const date = item.data.date.toLocaleDateString("en", {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-});
+const date = formatDate(item.data.date, "short");
 ---
 
-<article class="content-entry">
+<article class="content-entry" lang={item.data.language}>
   <p class="meta">{date}{item.data.location ? ` · ${item.data.location}` : ""}</p>
-  <h2><a href={href}>{item.data.title}</a></h2>
+  <h2><a href={href}><InlineMathText text={item.data.title} /></a></h2>
   {item.data.speaker && <p class="meta">{item.data.speaker}</p>}
-  {item.data.summary && <p>{item.data.summary}</p>}
+  {item.data.summary && <p><InlineMathText text={item.data.summary} /></p>}
 </article>
 
 <style>

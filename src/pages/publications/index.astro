@@ -6,16 +6,43 @@ import PublicationItem from "../../components/PublicationItem.astro";
 const publications = (await getCollection("publications")).sort(
   (a, b) => b.data.year - a.data.year || a.data.order - b.data.order,
 );
+const years = [...new Set(publications.map((publication) => publication.data.year))];
+const groups = years.map((year) => ({
+  year,
+  items: publications.filter((publication) => publication.data.year === year),
+}));
 ---
 
 <BaseLayout title="Publications">
   <section class="container page">
     <p class="eyebrow">Research Output</p>
     <h1 class="page-title">Publications</h1>
-    <p class="lead">Selected papers and preprints from the lab.</p>
+    <p class="lead">Recent publications from the lab.</p>
 
-    <div class="stack section">
-      {publications.map((publication) => <PublicationItem publication={publication} />)}
+    <div class="section">
+      {groups.map((group) => (
+        <section class="publication-year" id={`year-${group.year}`} aria-labelledby={`publications-${group.year}`}>
+          <h2 class="year-title" id={`publications-${group.year}`}>{group.year}</h2>
+          <div class="stack">
+            {group.items.map((publication) => <PublicationItem publication={publication} headingLevel="h3" />)}
+          </div>
+        </section>
+      ))}
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .publication-year + .publication-year {
+    margin-top: 48px;
+  }
+
+  .publication-year {
+    scroll-margin-top: 24px;
+  }
+
+  .year-title {
+    margin: 0 0 20px;
+    font: normal 30px/1.2 Georgia, serif;
+  }
+</style>
