@@ -10,6 +10,7 @@ venue: "SciPost Physics 20, 175 (2026)"
 summary: "An extension of rational Q-systems to integrable spin chains without U(1) symmetry, including twisted and boundary XXZ models."
 arxiv: "https://arxiv.org/abs/2512.01551"
 doi: "10.21468/SciPostPhys.20.6.175"
+inspireId: 3088144
 order: 3
 ---
 

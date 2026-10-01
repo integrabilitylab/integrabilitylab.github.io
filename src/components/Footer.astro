@@ -1,10 +1,11 @@
 ---
 import { site } from "../data/site";
+import { formatYear } from "../utils/date";
 ---
 
 <footer class="site-footer">
   <div class="container footer-inner">
-    <p>&copy; {new Date().getFullYear()} {site.name}</p>
+    <p>&copy; {formatYear()} {site.name}</p>
     <nav aria-label="Footer navigation">
       {site.footer.map((item) => <a href={item.href}>{item.label}</a>)}
     </nav>

@@ -22,6 +22,6 @@ const { Content } = await render(publication);
   <p class="meta">{publication.data.authors.join(", ")}</p>
   {publication.data.venue && <p>{publication.data.venue}</p>}
   {publication.data.arxiv && <p>arXiv: <a href={publication.data.arxiv}>{publication.data.arxiv}</a></p>}
-  {publication.data.doi && <p>DOI: {publication.data.doi}</p>}
+  {publication.data.doi && <p>DOI: <a href={`https://doi.org/${publication.data.doi}`}>{publication.data.doi}</a></p>}
   <Content />
 </ContentLayout>
