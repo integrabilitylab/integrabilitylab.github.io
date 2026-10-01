@@ -1,4 +1,5 @@
 ---
+import { formatDate } from "../../utils/date";
 import { getCollection, render } from "astro:content";
 import ContentLayout from "../../layouts/ContentLayout.astro";
 
@@ -12,14 +13,10 @@ export async function getStaticPaths() {
 
 const { item } = Astro.props;
 const { Content } = await render(item);
-const date = item.data.date.toLocaleDateString("en", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-});
+const date = formatDate(item.data.date, "long");
 ---
 
-<ContentLayout title={item.data.title} description={item.data.summary} eyebrow={date}>
+<ContentLayout title={item.data.title} description={item.data.summary} eyebrow={date} lang={item.data.language}>
   {item.data.image && <img src={item.data.image} alt="" />}
   <Content />
 </ContentLayout>

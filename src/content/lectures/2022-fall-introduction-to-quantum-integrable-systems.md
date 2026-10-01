@@ -1,5 +1,6 @@
 ---
 title: "量子可积系统导论"
+language: "zh-CN"
 date: 2022-09-01
 speaker: "JIANG Yunfeng"
 location: "Institute of Theoretical Physics, Chinese Academy of Sciences"

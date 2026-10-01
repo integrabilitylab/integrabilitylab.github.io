@@ -1,5 +1,6 @@
 ---
 title: "量子可积性的七种武器"
+language: "zh-CN"
 date: 2023-09-01
 speaker: "JIANG Yunfeng"
 location: "Tsung-Dao Lee Institute"

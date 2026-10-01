@@ -1,4 +1,5 @@
 ---
+import { formatDate } from "../utils/date";
 interface Props {
   items: Array<{
     id: string;
@@ -22,11 +23,7 @@ const { items } = Astro.props;
       <article class="content-entry">
         {item.data.date && (
           <p class="meta">
-            {item.data.date.toLocaleDateString("en", {
-              year: "numeric",
-              month: "short",
-              day: "numeric",
-            })}{item.data.location ? ` · ${item.data.location}` : ""}
+            {formatDate(item.data.date, "short")}{item.data.location ? ` · ${item.data.location}` : ""}
           </p>
         )}
         <h2><a href={`/${item.collection}/${item.id}/`}><InlineMathText text={item.data.title} /></a></h2>

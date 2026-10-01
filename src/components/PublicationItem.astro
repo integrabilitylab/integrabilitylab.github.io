@@ -1,5 +1,6 @@
 ---
 interface Props {
+  headingLevel?: "h2" | "h3";
   publication: {
     id: string;
     data: {
@@ -13,19 +14,21 @@ interface Props {
 }
 
 import InlineMathText from "./InlineMathText.astro";
-const { publication } = Astro.props;
+const { publication, headingLevel: Heading = "h2" } = Astro.props;
 ---
 
 <article class="content-entry">
-  <h2><a href={`/publications/${publication.id}/`}><InlineMathText text={publication.data.title} /></a></h2>
+  <Heading><a href={`/publications/${publication.id}/`}><InlineMathText text={publication.data.title} /></a></Heading>
   <p class="meta">{publication.data.authors.join(", ")} · {publication.data.year}</p>
   {publication.data.venue && <p class="meta">{publication.data.venue}</p>}
   {publication.data.summary && <p><InlineMathText text={publication.data.summary} /></p>}
 </article>
 
 <style>
-  h2 {
+  h2,
+  h3 {
     margin: 0;
+    max-width: 52ch;
     font-size: 1.12rem;
     line-height: 1.3;
   }

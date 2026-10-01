@@ -6,12 +6,13 @@ interface Props {
   title: string;
   description?: string;
   eyebrow?: string;
+  lang?: "en" | "zh-CN";
 }
 
-const { title, description, eyebrow } = Astro.props;
+const { title, description, eyebrow, lang } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} lang={lang}>
   <article class="container page reading-page">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h1 class="page-title"><InlineMathText text={title} /></h1>

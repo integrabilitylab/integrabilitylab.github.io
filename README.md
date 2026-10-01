@@ -33,3 +33,31 @@ npm run preview
 ```
 
 The generated site is written to `dist/`.
+
+Run all checks before opening a pull request:
+
+```sh
+npm run validate
+```
+
+This runs Astro's type checker, regression tests, the production build, and a
+check of the generated pages for broken local links, missing anchors, duplicate
+IDs, and invalid metadata. Pull requests to `dev` and `main`, and pushes to
+`dev`, run these checks automatically. Deployment to GitHub Pages also runs them.
+
+## Content conventions
+
+- Content collections load Markdown (`.md`) files. MDX (`.mdx`) combines Markdown
+  with components and requires an MDX integration before it can be enabled here.
+- All displayed dates and copyright years use Beijing time (`Asia/Shanghai`),
+  regardless of the machine or CI runner's timezone.
+- Inline formulas delimited by `$...$` render as native MathML in page headings
+  and lists, using KaTeX at build time. Browser titles, search descriptions, and
+  social metadata use readable Unicode notation such as `TT̄` and `D₈⁽¹⁾`, because
+  those fields cannot contain rendered HTML or MathML. No client math script or
+  font download is required.
+- News, events, and lectures can set `language: "zh-CN"`; the default is `en`.
+- Images remain in `public/images/` and are served as supplied.
+
+The site includes canonical URLs, social metadata, and a sitemap at
+`/sitemap-index.xml`. The old `/events/` entry redirects to `/news/#updates`.
