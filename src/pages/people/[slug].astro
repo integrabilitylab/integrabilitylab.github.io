@@ -17,7 +17,7 @@ const sections = headings.filter(heading => heading.depth === 2);
       <div class="profile-heading-copy">
         <p class="profile-category">{{ faculty: "Faculty", postdocs: "Postdoc", students: "Student", alumni: "Alumni" }[person.data.category]}</p>
         <h1 class="page-title">{person.data.name}</h1>
-      <p class="lead">{person.data.role}</p>
+        <p class="lead">{person.data.role}</p>
       </div>
 
     </header>
@@ -41,3 +41,71 @@ const sections = headings.filter(heading => heading.depth === 2);
     </div>
   </article>
 </BaseLayout>
+
+<style>
+  .profile { width: min(var(--width-detail), calc(100% - 40px)); }
+  .profile-grid { padding-top: 1.75rem; }
+  aside {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3) 2.25rem;
+    padding-bottom: 1.75rem;
+    margin-bottom: 2.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .info-section h2 {
+    font: 600 .7rem/1.5 var(--font-body);
+    text-transform: uppercase;
+    letter-spacing: .12em;
+    color: var(--muted);
+    margin: 0 0 .75rem;
+  }
+  .contact-link { display: block; font-size: var(--text-small); margin-top: var(--space-1); overflow-wrap: anywhere; }
+  .interests { display: flex; flex-wrap: wrap; gap: var(--space-1); list-style: none; padding: 0; margin: 0; }
+  .interests li { padding: 5px 9px; background: #eaf0e6; font-size: .8rem; border-radius: 3px; }
+  .contents { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: .625rem var(--space-3); }
+  .contents h2 { flex-basis: 100%; margin-bottom: 0; }
+  .contents a { font-size: var(--text-small); }
+  .profile-back { display: inline-block; margin-bottom: 1.75rem; }
+  .profile-heading {
+    display: flex;
+    align-items: center;
+    gap: clamp(28px, 5vw, 56px);
+    padding: var(--space-1) 0 2.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .profile-heading-copy { min-width: 0; }
+  .profile-portrait { width: 190px; height: auto; flex: 0 0 auto; border-radius: 5px; border: 1px solid var(--border); }
+  .profile-category { margin: 0 0 1.125rem; color: var(--accent); font-size: .7rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+  .profile-heading h1 { letter-spacing: -.025em; }
+  .profile-heading .lead { margin: 1.125rem 0 0; max-width: 34ch; }
+
+  /* These blocks come from member Markdown and intentionally use the full measure. */
+  .profile-body :global(.career-timeline) { margin: 0 0 2em; }
+  .profile-body :global(.career-entry) { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: var(--space-4); padding-block: 1.375rem; }
+  .profile-body :global(.career-entry + .career-entry) { border-top: 1px solid var(--border); }
+  .profile-body :global(.career-entry dt) { padding-top: 3px; color: var(--muted); font-size: var(--text-small); line-height: 1.7; font-variant-numeric: tabular-nums; }
+  .profile-body :global(.career-entry time) { white-space: nowrap; }
+  .profile-body :global(.career-entry dd) { margin: 0; min-width: 0; }
+  .profile-body :global(.career-entry p) { margin: 0; }
+  .profile-body :global(.career-entry p + p) { margin-top: 4px; }
+  .profile-body :global(.career-role) { font-weight: 600; color: var(--accent-strong); }
+  .profile-body :global(.career-location) { color: var(--muted); font-size: var(--text-meta); }
+  .profile-body :global(.poem-center) { max-width: var(--width-reading); padding: 1.75rem var(--space-2); margin-block: 2em; text-align: center; background: #edf0e7; font-family: Georgia, "Songti SC", SimSun, serif; }
+  .profile-body :global(.poem-center p:last-child) { margin-bottom: 0; }
+  @media (max-width: 640px) {
+    aside { grid-template-columns: 1fr; gap: var(--space-3); }
+    .profile-body :global(.career-entry) { grid-template-columns: 1fr; gap: var(--space-1); padding-block: 1.25rem; }
+    .profile-body :global(.career-entry dt) { padding-top: 0; }
+  }
+  @media (max-width: 540px) {
+    .profile-heading { gap: var(--space-3); }
+    .profile-portrait { width: 120px; }
+    .profile-heading .page-title { font-size: 1.8rem; }
+    .profile-heading .lead { font-size: var(--text-small); margin-top: .75rem; }
+    .profile-category { margin-bottom: .75rem; }
+  }
+  @media (max-width: 380px) {
+    .profile-heading { flex-direction: column; align-items: flex-start; }
+  }
+</style>

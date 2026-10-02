@@ -1,6 +1,7 @@
 ---
 import { formatDate } from "../utils/date";
 interface Props {
+  headingLevel?: "h2" | "h3";
   items: Array<{
     id: string;
     collection: string;
@@ -14,7 +15,7 @@ interface Props {
 }
 
 import InlineMathText from "./InlineMathText.astro";
-const { items } = Astro.props;
+const { items, headingLevel: Heading = "h2" } = Astro.props;
 ---
 
 <div class="stack">
@@ -26,7 +27,7 @@ const { items } = Astro.props;
             {formatDate(item.data.date, "short")}{item.data.location ? ` · ${item.data.location}` : ""}
           </p>
         )}
-        <h2><a href={`/${item.collection}/${item.id}/`}><InlineMathText text={item.data.title} /></a></h2>
+        <Heading><a href={`/${item.collection}/${item.id}/`}><InlineMathText text={item.data.title} /></a></Heading>
         {item.data.summary && <p><InlineMathText text={item.data.summary} /></p>}
       </article>
     ))
@@ -34,9 +35,9 @@ const { items } = Astro.props;
 </div>
 
 <style>
-  h2 {
+  h2, h3 {
     margin: 4px 0 0;
-    font-size: 1.12rem;
+    font-size: var(--text-entry);
     line-height: 1.3;
   }
 
