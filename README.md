@@ -61,3 +61,18 @@ IDs, and invalid metadata. Pull requests to `dev` and `main`, and pushes to
 
 The site includes canonical URLs, social metadata, and a sitemap at
 `/sitemap-index.xml`. The old `/events/` entry redirects to `/news/#updates`.
+
+## Presentation and navigation
+
+- Publications have year anchors and native expandable summaries. A small
+  client script adds word-based search across titles, authors, years and
+  summaries, including readable formula text. Without JavaScript, the complete
+  catalog, year links and summaries remain available.
+- Shared typography, spacing and width tokens live in `src/styles/global.css`.
+  Paragraphs and ordinary lists use a 70ch reading measure; detail headings,
+  images and member career timelines can use the wider layout. Member-specific
+  styles live with the profile page.
+- Publication metadata is generated from the title, authors, year and summary
+  (or venue when a summary is absent). The shared 1200 × 630 social card is
+  `public/images/social/laboratory.png`; its editable vector source is the SVG
+  beside it. Re-export the PNG when changing the SVG.

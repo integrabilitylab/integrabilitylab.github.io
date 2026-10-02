@@ -31,5 +31,11 @@
   svg { display: block; width: 100%; margin-block: 20px 8px; }
   figcaption { display: grid; gap: 10px; text-align: center; font-size: 11px; color: #526c61; }
   .equation { font: 20px/1.5 Georgia, serif; color: #245e53; }
-  @media(max-width: 480px) { .integrability-art { padding: 16px; } .figure-heading { font-size: 8px; } }
+  @media(max-width: 600px) {
+    .integrability-art { padding: var(--space-2); }
+    .figure-heading { font-size: 8px; }
+    svg { height: 112px; margin-block: var(--space-1); }
+    figcaption { gap: 4px; font-size: 10px; }
+    .equation { font-size: 18px; }
+  }
 </style>

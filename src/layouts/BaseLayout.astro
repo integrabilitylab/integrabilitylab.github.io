@@ -11,10 +11,11 @@ interface Props {
   lang?: "en" | "zh-CN";
 }
 
-const { title, description = site.description, lang = "en" } = Astro.props;
+const { title, description = site.metaDescription, lang = "en" } = Astro.props;
 const pageTitle = toMetadataText(title ? `${title} | ${site.name}` : site.name);
 const pageDescription = toMetadataText(description);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImage = new URL("/images/social/laboratory.png", Astro.site);
 ---
 
 <!doctype html>
@@ -32,15 +33,23 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:locale" content={lang === "zh-CN" ? "zh_CN" : "en_US"} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Laboratory of Quantum Integrability — integrable systems and mathematical physics." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content="Laboratory of Quantum Integrability — integrable systems and mathematical physics." />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={pageDescription} />
     <meta name="generator" content={Astro.generator} />
     <title>{pageTitle}</title>
   </head>
   <body>
+    <a class="skip-link" href="#main-content">{lang === "zh-CN" ? "跳到正文" : "Skip to content"}</a>
     <Header />
-    <main>
+    <main id="main-content" tabindex="-1">
       <slot />
     </main>
     <Footer />

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f7f6ef"/>
+  <path d="M64 64H1136M64 548H1136" stroke="#cdd8cc"/>
+  <text x="64" y="111" fill="#245e53" font-family="Arial, sans-serif" font-size="15" letter-spacing="2">QUANTUM PHYSICS · MATHEMATICAL STRUCTURES</text>
+  <g fill="#253c34" font-family="Georgia, serif" font-size="66">
+    <text x="64" y="228">Laboratory of</text>
+    <text x="64" y="307">Quantum</text>
+    <text x="64" y="386" fill="#245e53" font-style="italic">Integrability</text>
+  </g>
+  <text x="64" y="470" fill="#245e53" font-family="Georgia, serif" font-size="24" font-style="italic">In a chaotic world, we seek integrable laws.</text>
+  <g transform="translate(730 150)">
+    <rect width="406" height="328" fill="#eaf0e6" stroke="#cdd8cc"/>
+    <g fill="none" stroke-width="3" stroke-linecap="round">
+      <path d="M34 237C34 150 154 174 154 64" stroke="#245e53"/>
+      <path d="M94 237C94 194 68 126 94 64" stroke="#b4774d"/>
+      <path d="M154 237C154 144 34 174 34 64" stroke="#718b83"/>
+      <path d="M250 237C250 144 370 174 370 64" stroke="#245e53"/>
+      <path d="M310 237C310 194 336 126 310 64" stroke="#b4774d"/>
+      <path d="M370 237C370 150 250 174 250 64" stroke="#718b83"/>
+    </g>
+    <g fill="#245e53" font-family="Georgia, serif" font-style="italic" font-size="20">
+      <text x="29" y="45">u</text><text x="89" y="45">v</text><text x="149" y="45">w</text>
+      <text x="245" y="45">u</text><text x="305" y="45">v</text><text x="365" y="45">w</text>
+      <text x="194" y="161" font-style="normal">=</text>
+    </g>
+    <text x="203" y="292" text-anchor="middle" fill="#526c61" font-family="Arial, sans-serif" font-size="13" letter-spacing="1">THE GEOMETRY OF INTEGRABILITY</text>
+  </g>
+  <text x="64" y="587" fill="#68756d" font-family="Arial, sans-serif" font-size="16">SOUTHEAST UNIVERSITY · NANJING, CHINA</text>
+  <text x="1136" y="587" text-anchor="end" fill="#68756d" font-family="Arial, sans-serif" font-size="16">integrabilitylab.github.io</text>
+</svg>
