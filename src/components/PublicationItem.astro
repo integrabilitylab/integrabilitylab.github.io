@@ -1,6 +1,7 @@
 ---
 interface Props {
   headingLevel?: "h2" | "h3";
+  summaryMode?: "inline" | "disclosure";
   publication: {
     id: string;
     data: {
@@ -14,14 +15,22 @@ interface Props {
 }
 
 import InlineMathText from "./InlineMathText.astro";
-const { publication, headingLevel: Heading = "h2" } = Astro.props;
+import { publicationDescription } from "../utils/publication";
+const { publication, headingLevel: Heading = "h2", summaryMode = "inline" } = Astro.props;
 ---
 
-<article class="content-entry">
+<article class="content-entry" data-publication={summaryMode === "disclosure" ? publicationDescription(publication.data) : undefined}>
   <Heading><a href={`/publications/${publication.id}/`}><InlineMathText text={publication.data.title} /></a></Heading>
   <p class="meta">{publication.data.authors.join(", ")} · {publication.data.year}</p>
   {publication.data.venue && <p class="meta">{publication.data.venue}</p>}
-  {publication.data.summary && <p><InlineMathText text={publication.data.summary} /></p>}
+  {publication.data.summary && (
+    summaryMode === "disclosure" ? (
+      <details>
+        <summary>Summary<span class="summary-context"> of <InlineMathText text={publication.data.title} /></span></summary>
+        <p><InlineMathText text={publication.data.summary} /></p>
+      </details>
+    ) : <p><InlineMathText text={publication.data.summary} /></p>
+  )}
 </article>
 
 <style>
@@ -29,11 +38,17 @@ const { publication, headingLevel: Heading = "h2" } = Astro.props;
   h3 {
     margin: 0;
     max-width: 52ch;
-    font-size: 1.12rem;
+    font-size: var(--text-entry);
     line-height: 1.3;
   }
 
   p {
     margin: 8px 0 0;
+    max-width: var(--width-reading);
   }
+
+  details { margin-top: .75rem; }
+  summary { width: fit-content; color: var(--accent); cursor: pointer; font-size: var(--text-small); }
+  summary:hover { text-decoration: underline; text-underline-offset: 3px; }
+  .summary-context { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 </style>

@@ -5,14 +5,15 @@ import InlineMathText from "../components/InlineMathText.astro";
 interface Props {
   title: string;
   description?: string;
+  metaDescription?: string;
   eyebrow?: string;
   lang?: "en" | "zh-CN";
 }
 
-const { title, description, eyebrow, lang } = Astro.props;
+const { title, description, metaDescription = description, eyebrow, lang } = Astro.props;
 ---
 
-<BaseLayout title={title} description={description} lang={lang}>
+<BaseLayout title={title} description={metaDescription} lang={lang}>
   <article class="container page reading-page">
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h1 class="page-title"><InlineMathText text={title} /></h1>
@@ -22,15 +23,21 @@ const { title, description, eyebrow, lang } = Astro.props;
     </div>
   </article>
 </BaseLayout>
-<style is:global>
-  .math {
+<style>
+  .reading-page {
+    width: min(var(--width-detail), calc(100% - 40px));
+  }
+
+  .page-title { text-wrap: balance; }
+
+  .reading-page :global(.math) {
     display: inline-block;
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-editorial);
     font-style: italic;
     letter-spacing: -0.04em;
   }
 
-  .math-overline {
+  .reading-page :global(.math-overline) {
     text-decoration: overline;
     text-decoration-thickness: 0.08em;
     text-underline-offset: 0.08em;

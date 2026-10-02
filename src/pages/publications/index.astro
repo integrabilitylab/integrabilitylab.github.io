@@ -13,36 +13,129 @@ const groups = years.map((year) => ({
 }));
 ---
 
-<BaseLayout title="Publications">
-  <section class="container page">
+<BaseLayout title="Publications" description={`Browse ${publications.length} publications from the Laboratory of Quantum Integrability, ${years.at(-1)}–${years[0]}. Search by title, author, year or topic.`}>
+  <section class="container page" data-publication-catalog>
     <p class="eyebrow">Research Output</p>
     <h1 class="page-title">Publications</h1>
-    <p class="lead">Recent publications from the lab.</p>
 
-    <div class="section">
+    <form class="catalog-search section" role="search" hidden>
+      <label for="publication-search">Search publications</label>
+      <div class="search-field">
+        <input id="publication-search" type="search" placeholder="Title, author, year or topic" aria-describedby="search-help" autocomplete="off" />
+        <button type="button" data-clear hidden>Clear</button>
+      </div>
+      <p id="search-help">Combine words to narrow the list.</p>
+    </form>
+    <p class="result-count" role="status" aria-live="polite" aria-atomic="true" data-result-count>{publications.length} publications</p>
+
+    <div class="catalog-layout">
+      <nav class="year-nav" aria-label="Publication years">
+        <p class="eyebrow">Jump to year</p>
+        <div class="year-links">
+          {groups.map(group => <a href={`#year-${group.year}`} data-year-link={group.year}>{group.year}<span data-year-count aria-label={`${group.items.length} publications`}>{group.items.length}</span></a>)}
+        </div>
+      </nav>
+      <div class="catalog-results">
+        <p data-empty hidden>No publications match your search. Try fewer words or clear the search.</p>
       {groups.map((group) => (
-        <section class="publication-year" id={`year-${group.year}`} aria-labelledby={`publications-${group.year}`}>
+        <section class="publication-year" data-year={group.year} id={`year-${group.year}`} aria-labelledby={`publications-${group.year}`}>
           <h2 class="year-title" id={`publications-${group.year}`}>{group.year}</h2>
           <div class="stack">
-            {group.items.map((publication) => <PublicationItem publication={publication} headingLevel="h3" />)}
+            {group.items.map((publication) => <PublicationItem publication={publication} headingLevel="h3" summaryMode="disclosure" />)}
           </div>
         </section>
       ))}
+      </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .publication-year + .publication-year {
-    margin-top: 48px;
+  .catalog-search { max-width: 46rem; }
+  .catalog-search label { display:block; font-weight:600; font-size:var(--text-small); margin-bottom:var(--space-1); }
+  .search-field { display:flex; gap:var(--space-1); align-items:center; }
+  input { width:100%; min-width:0; padding:.75rem 1rem; border:1px solid var(--border); border-radius:2px; background:var(--surface); color:var(--text); }
+  input::placeholder { color:var(--muted); opacity:1; }
+  button { border:0; background:transparent; color:var(--accent); padding:.75rem; cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+  #search-help, .result-count { color:var(--muted); font-size:var(--text-small); }
+  #search-help { margin:var(--space-1) 0 0; }
+  .result-count { margin-block:var(--space-3); font-variant-numeric:tabular-nums; }
+  .catalog-layout { display:grid; grid-template-columns:8rem minmax(0,1fr); gap:var(--space-5); align-items:start; }
+  .year-nav { position:sticky; top:var(--space-3); max-height:calc(100svh - var(--space-5)); overflow-y:auto; padding:4px; }
+  .year-nav .eyebrow { margin:0 0 var(--space-2); }
+  .year-links { display:grid; gap:4px; }
+  .year-links a { display:flex; align-items:baseline; justify-content:space-between; gap:var(--space-2); padding:.375rem var(--space-1); border-left:1px solid var(--border); font-variant-numeric:tabular-nums; }
+  .year-links a:hover { border-color:var(--accent); background:#eaf0e6; text-decoration:none; }
+  .year-links span { color:var(--muted); font-size:.75rem; }
+  .catalog-results { min-width:0; }
+  .publication-year:not([hidden]) ~ .publication-year:not([hidden]) {
+    margin-top: var(--space-5);
   }
 
   .publication-year {
-    scroll-margin-top: 24px;
+    scroll-margin-top: var(--space-3);
   }
 
   .year-title {
     margin: 0 0 20px;
-    font: normal 30px/1.2 Georgia, serif;
+    font: normal 1.875rem/1.2 var(--font-editorial);
+  }
+  @media (max-width:900px) {
+    .catalog-layout { grid-template-columns:minmax(0,1fr); gap:var(--space-4); }
+    .year-nav { position:static; max-height:none; overflow:visible; border-block:1px solid var(--border); padding-block:var(--space-2); }
+    .year-links { display:flex; flex-wrap:wrap; gap:var(--space-1); }
+    .year-links a { gap:.625rem; padding:.375rem .625rem; }
   }
 </style>
+
+<script>
+  import { matchesSearch } from "../../utils/search";
+
+  const catalog = document.querySelector<HTMLElement>("[data-publication-catalog]");
+  if (catalog) {
+    const form = catalog.querySelector<HTMLFormElement>("form")!;
+    const input = catalog.querySelector<HTMLInputElement>("input")!;
+    const clear = catalog.querySelector<HTMLButtonElement>("[data-clear]")!;
+    const status = catalog.querySelector<HTMLElement>("[data-result-count]")!;
+    const empty = catalog.querySelector<HTMLElement>("[data-empty]")!;
+    const groups = [...catalog.querySelectorAll<HTMLElement>("[data-year]")].map(section => ({
+      section,
+      link: catalog.querySelector<HTMLAnchorElement>('[data-year-link="' + section.dataset.year + '"]')!,
+      entries: [...section.querySelectorAll<HTMLElement>("[data-publication]")],
+    }));
+    const total = groups.reduce((sum, group) => sum + group.entries.length, 0);
+
+    function filterPublications() {
+      let count = 0;
+      for (const { section, link, entries } of groups) {
+        let yearCount = 0;
+        for (const entry of entries) {
+          const matches = matchesSearch(entry.dataset.publication || "", input.value);
+          entry.hidden = !matches;
+          if (matches) yearCount++;
+        }
+        section.hidden = yearCount === 0;
+        link.hidden = yearCount === 0;
+        const badge = link.querySelector<HTMLElement>("[data-year-count]")!;
+        badge.textContent = String(yearCount);
+        badge.setAttribute("aria-label", yearCount + (yearCount === 1 ? " publication" : " publications"));
+        count += yearCount;
+      }
+      status.textContent = input.value.trim() ? count + " of " + total + " publications" : total + " publications";
+      empty.hidden = count > 0;
+      clear.hidden = !input.value;
+    }
+
+    form.hidden = false;
+    form.addEventListener("submit", event => event.preventDefault());
+    input.addEventListener("input", filterPublications);
+    clear.addEventListener("click", () => {
+      input.value = "";
+      filterPublications();
+      input.focus();
+    });
+    // Restore the list consistently if the browser restores a previously entered query.
+    window.addEventListener("pageshow", filterPublications);
+    filterPublications();
+  }
+</script>
