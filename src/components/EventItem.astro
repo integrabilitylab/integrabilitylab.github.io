@@ -1,6 +1,7 @@
 ---
 import InlineMathText from "./InlineMathText.astro";
 import { formatDate } from "../utils/date";
+import { collectionPath, localeFromPath, localizedPath } from "../utils/i18n";
 interface Props {
   item: {
     id: string;
@@ -17,8 +18,9 @@ interface Props {
 }
 
 const { item } = Astro.props;
-const href = `/${item.collection}/${item.id}/`;
-const date = formatDate(item.data.date, "short");
+const locale = localeFromPath(Astro.url.pathname);
+const href = localizedPath(`/${collectionPath(item.collection)}/${item.id}/`, locale);
+const date = formatDate(item.data.date, "short", locale);
 ---
 
 <article class="content-entry" lang={item.data.language}>

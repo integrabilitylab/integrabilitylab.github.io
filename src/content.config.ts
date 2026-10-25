@@ -2,7 +2,7 @@ import { defineCollection } from "astro:content";
 import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
-const people = defineCollection({
+const people = {
   loader: glob({ pattern: "**/*.md", base: "./src/content/people" }),
   schema: z.object({
     name: z.string(),
@@ -14,12 +14,13 @@ const people = defineCollection({
     interests: z.array(z.string()).default([]),
     order: z.number().default(100),
   }),
-});
+};
 
-const publications = defineCollection({
+const publications = {
   loader: glob({ pattern: "**/*.md", base: "./src/content/publications" }),
   schema: z.object({
     title: z.string(),
+    originalTitle: z.string().optional(),
     authors: z.array(z.string()),
     year: z.number().int().positive(),
     venue: z.string().optional(),
@@ -29,7 +30,7 @@ const publications = defineCollection({
     inspireId: z.number().int().positive().optional(),
     order: z.number().default(100),
   }),
-});
+};
 
 const datedContent = {
   title: z.string(),
@@ -39,20 +40,20 @@ const datedContent = {
   image: z.string().optional(),
 };
 
-const news = defineCollection({
+const news = {
   loader: glob({ pattern: "**/*.md", base: "./src/content/news" }),
   schema: z.object(datedContent),
-});
+};
 
-const events = defineCollection({
+const events = {
   loader: glob({ pattern: "**/*.md", base: "./src/content/events" }),
   schema: z.object({
     ...datedContent,
     location: z.string().optional(),
   }),
-});
+};
 
-const lectures = defineCollection({
+const lectures = {
   loader: glob({ pattern: "**/*.md", base: "./src/content/lectures" }),
   schema: z.object({
     ...datedContent,
@@ -69,12 +70,17 @@ const lectures = defineCollection({
       )
       .default([]),
   }),
-});
+};
 
 export const collections = {
-  people,
-  publications,
-  news,
-  events,
-  lectures,
+  people: defineCollection(people),
+  peopleZh: defineCollection({ ...people, loader: glob({ pattern: "**/*.md", base: "./src/content/people-zh" }) }),
+  publications: defineCollection(publications),
+  publicationsZh: defineCollection({ ...publications, loader: glob({ pattern: "**/*.md", base: "./src/content/publications-zh" }) }),
+  news: defineCollection(news),
+  newsZh: defineCollection({ ...news, loader: glob({ pattern: "**/*.md", base: "./src/content/news-zh" }) }),
+  events: defineCollection(events),
+  eventsZh: defineCollection({ ...events, loader: glob({ pattern: "**/*.md", base: "./src/content/events-zh" }) }),
+  lectures: defineCollection(lectures),
+  lecturesZh: defineCollection({ ...lectures, loader: glob({ pattern: "**/*.md", base: "./src/content/lectures-zh" }) }),
 };

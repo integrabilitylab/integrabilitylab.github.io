@@ -2,38 +2,42 @@
 import { getCollection, render } from "astro:content";
 import InlineMathText from "../../components/InlineMathText.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { localeFromPath, localizedPath, translated } from "../../utils/i18n";
+import type { LocalizedEntry } from "../../utils/localizedContent";
+interface Props { person: LocalizedEntry<"people">; }
 export async function getStaticPaths() {
   return (await getCollection("people")).map(person => ({ params: { slug: person.id }, props: { person } }));
 }
 const { person } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
 const { Content, headings } = await render(person);
 const sections = headings.filter(heading => heading.depth === 2);
 ---
 <BaseLayout title={person.data.name} description={person.data.role}>
   <article class="container page profile">
-    <a class="eyebrow profile-back" href="/people/">← People</a>
+    <a class="eyebrow profile-back" href={localizedPath("/people/", locale)}>{translated(locale, "← People", "← 实验室成员")}</a>
     <header class="profile-heading">
-      {person.data.avatar && <img class="profile-portrait" src={person.data.avatar} alt={`${person.data.name} portrait`} width="159" height="238" />}
+      {person.data.avatar && <img class="profile-portrait" src={person.data.avatar} alt={translated(locale, `${person.data.name} portrait`, `${person.data.name}的照片`)} width="159" height="238" />}
       <div class="profile-heading-copy">
-        <p class="profile-category">{{ faculty: "Faculty", postdocs: "Postdoc", students: "Student", alumni: "Alumni" }[person.data.category]}</p>
+        <p class="profile-category">{(locale === "zh-CN" ? { faculty: "教师", postdocs: "博士后", students: "学生", alumni: "往届成员" } : { faculty: "Faculty", postdocs: "Postdoc", students: "Student", alumni: "Alumni" })[person.data.category]}</p>
         <h1 class="page-title">{person.data.name}</h1>
         <p class="lead">{person.data.role}</p>
       </div>
 
     </header>
     <div class="profile-grid">
-      <aside aria-label="Profile information">
+      <aside aria-label={translated(locale, "Profile information", "成员信息")}>
         {(person.data.email || person.data.website) && <div class="info-section">
-          <h2>Contact</h2>
+          <h2>{translated(locale, "Contact", "联系方式")}</h2>
           {person.data.email && <a class="contact-link" href={`mailto:${person.data.email}`}>{person.data.email}</a>}
-          {person.data.website && <a class="contact-link" href={person.data.website}>{person.data.website.includes("seu.edu.cn") ? "Institutional profile" : "Personal website"} ↗</a>}
+          {person.data.website && <a class="contact-link" href={person.data.website}>{person.data.website.includes("seu.edu.cn") ? translated(locale, "Institutional profile", "学校个人主页") : translated(locale, "Personal website", "个人网站")} ↗</a>}
         </div>}
         {person.data.interests.length > 0 && <div class="info-section">
-          <h2>Research interests</h2>
+          <h2>{translated(locale, "Research interests", "研究方向")}</h2>
           <ul class="interests">{person.data.interests.map(interest => <li><InlineMathText text={interest} /></li>)}</ul>
         </div>}
-        {sections.length > 0 && <nav class="info-section contents" aria-label="On this page">
-          <h2>On this page</h2>
+        {sections.length > 0 && <nav class="info-section contents" aria-label={translated(locale, "On this page", "页面目录")}>
+          <h2>{translated(locale, "On this page", "页面目录")}</h2>
           {sections.map(heading => <a href={`#${heading.slug}`}>{heading.text}</a>)}
         </nav>}
       </aside>

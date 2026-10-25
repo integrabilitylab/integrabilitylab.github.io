@@ -1,17 +1,19 @@
 ---
-const destination = "/news/#updates";
+import { localeFromPath, localizedPath, translated } from "../../utils/i18n";
+const locale = localeFromPath(Astro.url.pathname);
+const destination = localizedPath("/news/#updates", locale);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="refresh" content={`0;url=${destination}`} />
-    <link rel="canonical" href={new URL("/news/", Astro.site)} />
-    <title>News & Events | Laboratory of Quantum Integrability</title>
+    <link rel="canonical" href={new URL(localizedPath("/news/", locale), Astro.site)} />
+    <title>{translated(locale, "News & Events | Laboratory of Quantum Integrability", "新闻与活动 | 量子可积实验室")}</title>
   </head>
   <body>
-    <p>Events are now listed with <a href={destination}>News & Events</a>.</p>
+    <p>{translated(locale, "Events are now listed with ", "活动现统一收录于")}<a href={destination}>{translated(locale, "News & Events", "新闻与活动")}</a>{translated(locale, ".", "。")}</p>
   </body>
 </html>

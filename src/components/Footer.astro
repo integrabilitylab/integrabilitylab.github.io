@@ -1,13 +1,15 @@
 ---
-import { site } from "../data/site";
+import { localeFromPath, localizedPath, localizedSite, translated } from "../utils/i18n";
 import { formatYear } from "../utils/date";
+const locale = localeFromPath(Astro.url.pathname);
+const site = localizedSite(locale);
 ---
 
 <footer class="site-footer">
   <div class="container footer-inner">
     <p>&copy; {formatYear()} {site.name}</p>
-    <nav aria-label="Footer navigation">
-      {site.footer.map((item) => <a href={item.href}>{item.label}</a>)}
+    <nav aria-label={translated(locale, "Footer navigation", "页脚导航")}>
+      {site.footer.map((item) => <a href={localizedPath(item.href, locale)}>{item.label}</a>)}
     </nav>
   </div>
 </footer>

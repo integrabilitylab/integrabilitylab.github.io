@@ -2,6 +2,9 @@
 import { getCollection, render } from "astro:content";
 import ContentLayout from "../../layouts/ContentLayout.astro";
 import { publicationDescription } from "../../utils/publication";
+import { localeFromPath, translated } from "../../utils/i18n";
+import type { LocalizedEntry } from "../../utils/localizedContent";
+interface Props { publication: LocalizedEntry<"publications">; }
 
 export async function getStaticPaths() {
   const publications = await getCollection("publications");
@@ -12,12 +15,14 @@ export async function getStaticPaths() {
 }
 
 const { publication } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
 const { Content } = await render(publication);
 const arxivId = publication.data.arxiv?.replace(/^https?:\/\/arxiv\.org\/abs\//, "");
 ---
 
 <ContentLayout
   title={publication.data.title}
+  originalTitle={publication.data.originalTitle}
   description={publication.data.summary}
   metaDescription={publicationDescription(publication.data)}
   eyebrow={`${publication.data.year}`}
@@ -27,7 +32,7 @@ const arxivId = publication.data.arxiv?.replace(/^https?:\/\/arxiv\.org\/abs\//,
     {publication.data.venue && <p>{publication.data.venue}</p>}
     {publication.data.arxiv && <p>arXiv: <a href={publication.data.arxiv}>{arxivId}</a></p>}
     {publication.data.doi && <p>DOI: <a href={`https://doi.org/${publication.data.doi}`}>{publication.data.doi}</a></p>}
-    {publication.data.inspireId && <p>INSPIRE: <a href={`https://inspirehep.net/literature/${publication.data.inspireId}`}>Record ↗</a></p>}
+    {publication.data.inspireId && <p>INSPIRE: <a href={`https://inspirehep.net/literature/${publication.data.inspireId}`}>{translated(locale, "Record ↗", "文献记录 ↗")}</a></p>}
   </div>
   <Content />
 </ContentLayout>

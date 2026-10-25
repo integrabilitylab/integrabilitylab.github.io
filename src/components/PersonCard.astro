@@ -1,5 +1,6 @@
 ---
 import InlineMathText from "./InlineMathText.astro";
+import { localeFromPath, localizedPath, translated } from "../utils/i18n";
 interface Props {
   person: {
     id: string;
@@ -13,16 +14,17 @@ interface Props {
 }
 
 const { person } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
 ---
 
 <article class:list={["person-card", { "no-portrait": !person.data.avatar }]}>
   {
     person.data.avatar && (
-      <img src={person.data.avatar} alt={`${person.data.name} portrait`} width="120" height="180" />
+      <img src={person.data.avatar} alt={translated(locale, `${person.data.name} portrait`, `${person.data.name}的照片`)} width="120" height="180" />
     )
   }
   <div class="identity">
-    <h3><a href={`/people/${person.id}/`}>{person.data.name}</a></h3>
+    <h3><a href={localizedPath(`/people/${person.id}/`, locale)}>{person.data.name}</a></h3>
     <p class="meta">{person.data.role}</p>
   </div>
   {

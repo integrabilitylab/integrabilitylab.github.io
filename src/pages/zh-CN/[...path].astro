@@ -1,0 +1,67 @@
+---
+import Home from "../index.astro";
+import About from "../about.astro";
+import People from "../people/index.astro";
+import Person from "../people/[slug].astro";
+import Publications from "../publications/index.astro";
+import Publication from "../publications/[slug].astro";
+import News from "../news/index.astro";
+import NewsArticle from "../news/[slug].astro";
+import EventsRedirect from "../events/index.astro";
+import Event from "../events/[slug].astro";
+import Lectures from "../lectures/index.astro";
+import Lecture from "../lectures/[slug].astro";
+import { localizedCollection, type LocalizedEntry } from "../../utils/localizedContent";
+
+type Props =
+  | { view: "home" | "about" | "people" | "publications" | "news" | "events" | "lectures" }
+  | { view: "person"; person: LocalizedEntry<"people"> }
+  | { view: "publication"; publication: LocalizedEntry<"publications"> }
+  | { view: "newsArticle"; item: LocalizedEntry<"news"> }
+  | { view: "event"; event: LocalizedEntry<"events"> }
+  | { view: "lecture"; lecture: LocalizedEntry<"lectures"> };
+
+export async function getStaticPaths() {
+  const routes: Array<{
+    params: { path: string | undefined };
+    props: Props;
+  }> = [
+    { params: { path: undefined }, props: { view: "home" } },
+    ...(["about", "people", "publications", "news", "events", "lectures"] as const).map(view => ({ params: { path: view }, props: { view } })),
+  ];
+  const [people, publications, news, events, lectures] = await Promise.all([
+    localizedCollection("people", "zh-CN"), localizedCollection("publications", "zh-CN"),
+    localizedCollection("news", "zh-CN"), localizedCollection("events", "zh-CN"), localizedCollection("lectures", "zh-CN"),
+  ]);
+  for (const person of people) {
+    routes.push({ params: { path: `people/${person.id}` }, props: { view: "person", person } });
+  }
+  for (const publication of publications) {
+    routes.push({ params: { path: `publications/${publication.id}` }, props: { view: "publication", publication } });
+  }
+  for (const item of news) {
+    routes.push({ params: { path: `news/${item.id}` }, props: { view: "newsArticle", item } });
+  }
+  for (const event of events) {
+    routes.push({ params: { path: `events/${event.id}` }, props: { view: "event", event } });
+  }
+  for (const lecture of lectures) {
+    routes.push({ params: { path: `lectures/${lecture.id}` }, props: { view: "lecture", lecture } });
+  }
+  return routes;
+}
+
+const props = Astro.props;
+---
+{props.view === "home" && <Home />}
+{props.view === "about" && <About />}
+{props.view === "people" && <People />}
+{props.view === "publications" && <Publications />}
+{props.view === "news" && <News />}
+{props.view === "events" && <EventsRedirect />}
+{props.view === "lectures" && <Lectures />}
+{props.view === "person" && <Person person={props.person} />}
+{props.view === "publication" && <Publication publication={props.publication} />}
+{props.view === "newsArticle" && <NewsArticle item={props.item} />}
+{props.view === "event" && <Event event={props.event} />}
+{props.view === "lecture" && <Lecture lecture={props.lecture} />}

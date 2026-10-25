@@ -1,5 +1,6 @@
 ---
 import { formatDate } from "../utils/date";
+import { collectionPath, localeFromPath, localizedPath } from "../utils/i18n";
 interface Props {
   headingLevel?: "h2" | "h3";
   items: Array<{
@@ -16,6 +17,7 @@ interface Props {
 
 import InlineMathText from "./InlineMathText.astro";
 const { items, headingLevel: Heading = "h2" } = Astro.props;
+const locale = localeFromPath(Astro.url.pathname);
 ---
 
 <div class="stack">
@@ -24,10 +26,10 @@ const { items, headingLevel: Heading = "h2" } = Astro.props;
       <article class="content-entry">
         {item.data.date && (
           <p class="meta">
-            {formatDate(item.data.date, "short")}{item.data.location ? ` · ${item.data.location}` : ""}
+            {formatDate(item.data.date, "short", locale)}{item.data.location ? ` · ${item.data.location}` : ""}
           </p>
         )}
-        <Heading><a href={`/${item.collection}/${item.id}/`}><InlineMathText text={item.data.title} /></a></Heading>
+        <Heading><a href={localizedPath(`/${collectionPath(item.collection)}/${item.id}/`, locale)}><InlineMathText text={item.data.title} /></a></Heading>
         {item.data.summary && <p><InlineMathText text={item.data.summary} /></p>}
       </article>
     ))

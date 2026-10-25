@@ -1,9 +1,11 @@
 ---
-import { getCollection } from "astro:content";
+import { localizedCollection } from "../../utils/localizedContent";
+import { localeFromPath, translated } from "../../utils/i18n";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PublicationItem from "../../components/PublicationItem.astro";
 
-const publications = (await getCollection("publications")).sort(
+const locale = localeFromPath(Astro.url.pathname);
+const publications = (await localizedCollection("publications", locale)).sort(
   (a, b) => b.data.year - a.data.year || a.data.order - b.data.order,
 );
 const years = [...new Set(publications.map((publication) => publication.data.year))];
@@ -13,30 +15,30 @@ const groups = years.map((year) => ({
 }));
 ---
 
-<BaseLayout title="Publications" description={`Browse ${publications.length} publications from the Laboratory of Quantum Integrability, ${years.at(-1)}–${years[0]}. Search by title, author, year or topic.`}>
-  <section class="container page" data-publication-catalog>
-    <p class="eyebrow">Research Output</p>
-    <h1 class="page-title">Publications</h1>
+<BaseLayout title={translated(locale, "Publications", "研究成果")} description={translated(locale, `Browse ${publications.length} publications from the Laboratory of Quantum Integrability, ${years.at(-1)}–${years[0]}. Search by title, author, year or topic.`, `浏览量子可积实验室 ${years.at(-1)}—${years[0]} 年的 ${publications.length} 篇论文，可按中英文标题、作者、年份或研究主题搜索。`)}>
+  <section class="container page" data-publication-catalog data-locale={locale}>
+    <p class="eyebrow">{translated(locale, "Research Output", "学术研究")}</p>
+    <h1 class="page-title">{translated(locale, "Publications", "研究成果")}</h1>
 
     <form class="catalog-search section" role="search" hidden>
-      <label for="publication-search">Search publications</label>
+      <label for="publication-search">{translated(locale, "Search publications", "搜索论文")}</label>
       <div class="search-field">
-        <input id="publication-search" type="search" placeholder="Title, author, year or topic" aria-describedby="search-help" autocomplete="off" />
-        <button type="button" data-clear hidden>Clear</button>
+        <input id="publication-search" type="search" placeholder={translated(locale, "Title, author, year or topic", "标题、作者、年份或关键词")} aria-describedby="search-help" autocomplete="off" />
+        <button type="button" data-clear hidden>{translated(locale, "Clear", "清除")}</button>
       </div>
-      <p id="search-help">Combine words to narrow the list.</p>
+      <p id="search-help">{translated(locale, "Combine words to narrow the list.", "可用中文或英文搜索，组合多个关键词缩小范围。")}</p>
     </form>
-    <p class="result-count" role="status" aria-live="polite" aria-atomic="true" data-result-count>{publications.length} publications</p>
+    <p class="result-count" role="status" aria-live="polite" aria-atomic="true" data-result-count>{translated(locale, `${publications.length} publications`, `共 ${publications.length} 篇论文`)}</p>
 
     <div class="catalog-layout">
-      <nav class="year-nav" aria-label="Publication years">
-        <p class="eyebrow">Jump to year</p>
+      <nav class="year-nav" aria-label={translated(locale, "Publication years", "论文年份")}>
+        <p class="eyebrow">{translated(locale, "Jump to year", "按年份浏览")}</p>
         <div class="year-links">
-          {groups.map(group => <a href={`#year-${group.year}`} data-year-link={group.year}>{group.year}<span data-year-count aria-label={`${group.items.length} publications`}>{group.items.length}</span></a>)}
+          {groups.map(group => <a href={`#year-${group.year}`} data-year-link={group.year}>{group.year}<span data-year-count aria-label={translated(locale, `${group.items.length} publications`, `${group.items.length} 篇论文`)}>{group.items.length}</span></a>)}
         </div>
       </nav>
       <div class="catalog-results">
-        <p data-empty hidden>No publications match your search. Try fewer words or clear the search.</p>
+        <p data-empty hidden>{translated(locale, "No publications match your search. Try fewer words or clear the search.", "没有找到匹配的论文。请减少关键词或清除搜索条件。")}</p>
       {groups.map((group) => (
         <section class="publication-year" data-year={group.year} id={`year-${group.year}`} aria-labelledby={`publications-${group.year}`}>
           <h2 class="year-title" id={`publications-${group.year}`}>{group.year}</h2>
@@ -93,6 +95,7 @@ const groups = years.map((year) => ({
 
   const catalog = document.querySelector<HTMLElement>("[data-publication-catalog]");
   if (catalog) {
+    const chinese = catalog.dataset.locale === "zh-CN";
     const form = catalog.querySelector<HTMLFormElement>("form")!;
     const input = catalog.querySelector<HTMLInputElement>("input")!;
     const clear = catalog.querySelector<HTMLButtonElement>("[data-clear]")!;
@@ -118,10 +121,12 @@ const groups = years.map((year) => ({
         link.hidden = yearCount === 0;
         const badge = link.querySelector<HTMLElement>("[data-year-count]")!;
         badge.textContent = String(yearCount);
-        badge.setAttribute("aria-label", yearCount + (yearCount === 1 ? " publication" : " publications"));
+        badge.setAttribute("aria-label", chinese ? `${yearCount} 篇论文` : yearCount + (yearCount === 1 ? " publication" : " publications"));
         count += yearCount;
       }
-      status.textContent = input.value.trim() ? count + " of " + total + " publications" : total + " publications";
+      status.textContent = chinese
+        ? (input.value.trim() ? `${total} 篇论文中找到 ${count} 篇` : `共 ${total} 篇论文`)
+        : (input.value.trim() ? count + " of " + total + " publications" : total + " publications");
       empty.hidden = count > 0;
       clear.hidden = !input.value;
     }

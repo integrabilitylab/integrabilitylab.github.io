@@ -1,26 +1,27 @@
 ---
 import ContentLayout from "../layouts/ContentLayout.astro";
 import UsefulLinks from "../components/UsefulLinks.astro";
-import { site } from "../data/site";
+import { localeFromPath, localizedSite, translated } from "../utils/i18n";
+const locale = localeFromPath(Astro.url.pathname);
+const site = localizedSite(locale);
 ---
 
-<ContentLayout title="About" eyebrow="The Laboratory" wide description={site.description} metaDescription="About the Laboratory of Quantum Integrability at Southeast University in Nanjing, China. Research in integrable systems and mathematical physics, contact details and institutional links.">
+<ContentLayout title={translated(locale, "About", "关于我们")} eyebrow={translated(locale, "The Laboratory", "实验室介绍")} wide description={site.description} metaDescription={translated(locale, "About the Laboratory of Quantum Integrability at Southeast University in Nanjing, China. Research in integrable systems and mathematical physics, contact details and institutional links.", "了解位于南京东南大学的量子可积实验室：可积系统与数学物理研究、联系方式及相关机构链接。")}>
   <p>
-    Integrability Lab studies integrable systems, mathematical physics, and
-    related structures in quantum field theory and statistical mechanics.
+    {translated(locale, "Integrability Lab studies integrable systems, mathematical physics, and related structures in quantum field theory and statistical mechanics.", "量子可积实验室研究可积系统、数学物理，以及量子场论和统计力学中的相关结构。")}
   </p>
 
-  <h2 id="contact">Contact</h2>
+  <h2 id="contact">{translated(locale, "Contact", "联系我们")}</h2>
   <address class="contact-card">
-    <p class="contact-label">Address</p>
+    <p class="contact-label">{translated(locale, "Address", "地址")}</p>
     <p class="contact-lines">
-      15th floor, Yifu Architecture Building<br />
-      Sipailou Campus, Southeast University<br />
-      Nanjing, Jiangsu Province, China
+      {translated(locale, "15th floor, Yifu Architecture Building", "逸夫建筑馆 15 楼")}<br />
+      {translated(locale, "Sipailou Campus, Southeast University", "东南大学四牌楼校区")}<br />
+      {translated(locale, "Nanjing, Jiangsu Province, China", "中国 · 江苏 · 南京")}
     </p>
   </address>
 
-  <h2>Useful Links</h2>
+  <h2>{translated(locale, "Useful Links", "相关链接")}</h2>
   <UsefulLinks />
 </ContentLayout>
 <style>

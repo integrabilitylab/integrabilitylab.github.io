@@ -1,12 +1,14 @@
 ---
 import { usefulLinks } from "../data/usefulLinks";
+import { localeFromPath } from "../utils/i18n";
+const locale = localeFromPath(Astro.url.pathname);
 ---
 <ul class="useful-links">
   {usefulLinks.map((link) => (
     <li>
       <a href={link.url}>
         <span class="logo"><img src={link.logo} alt="" width="56" height="56" loading="lazy" /></span>
-        <span class="link-copy"><span class="name" lang={link.lang}>{link.name}</span><span class="domain">{link.domain}</span></span>
+        <span class="link-copy"><span class="name" lang={link.url.includes("ustc") && locale === "zh-CN" ? "zh-CN" : link.lang}>{link.url.includes("ustc") && locale === "zh-CN" ? "Yang Zhang · 中国科学技术大学" : link.name}</span><span class="domain">{link.domain}</span></span>
         <span class="arrow" aria-hidden="true">↗</span>
       </a>
     </li>
