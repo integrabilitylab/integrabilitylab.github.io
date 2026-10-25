@@ -2,12 +2,12 @@
 name: "QIAN Xin"
 role: "Postdoctoral Researcher"
 category: "postdocs"
-avatar: "/images/people/qian-xin.png"
+avatar: "/images/people/qian-xin.jpg"
 email: "xinqian@seu.edu.cn"
 website: "https://superqx.github.io/"
 interests:
-  - Integrable structures in N=4 SYM and ABJM theory
   - Integrable quantum field theories
+  - Conformal field theories
   - Quantum many-body systems out of equilibrium
 order: 2
 ---
