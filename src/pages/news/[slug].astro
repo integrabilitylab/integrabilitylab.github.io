@@ -2,9 +2,6 @@
 import { formatDate } from "../../utils/date";
 import { getCollection, render } from "astro:content";
 import ContentLayout from "../../layouts/ContentLayout.astro";
-import { localeFromPath } from "../../utils/i18n";
-import type { LocalizedEntry } from "../../utils/localizedContent";
-interface Props { item: LocalizedEntry<"news">; }
 
 export async function getStaticPaths() {
   const news = await getCollection("news");
@@ -16,7 +13,7 @@ export async function getStaticPaths() {
 
 const { item } = Astro.props;
 const { Content } = await render(item);
-const date = formatDate(item.data.date, "long", localeFromPath(Astro.url.pathname));
+const date = formatDate(item.data.date, "long");
 ---
 
 <ContentLayout title={item.data.title} description={item.data.summary} eyebrow={date} lang={item.data.language}>

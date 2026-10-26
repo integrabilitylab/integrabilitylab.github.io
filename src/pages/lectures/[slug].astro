@@ -2,9 +2,6 @@
 import { formatDate } from "../../utils/date";
 import { getCollection, render } from "astro:content";
 import ContentLayout from "../../layouts/ContentLayout.astro";
-import { localeFromPath, translated } from "../../utils/i18n";
-import type { LocalizedEntry } from "../../utils/localizedContent";
-interface Props { lecture: LocalizedEntry<"lectures">; }
 
 export async function getStaticPaths() {
   const lectures = await getCollection("lectures");
@@ -15,23 +12,22 @@ export async function getStaticPaths() {
 }
 
 const { lecture } = Astro.props;
-const locale = localeFromPath(Astro.url.pathname);
 const { Content } = await render(lecture);
-const date = formatDate(lecture.data.date, "long", locale);
+const date = formatDate(lecture.data.date, "long");
 const videos = [
-  ...(lecture.data.video ? [{ title: translated(locale, "Video", "观看视频"), url: lecture.data.video }] : []),
+  ...(lecture.data.video ? [{ title: "Video", url: lecture.data.video }] : []),
   ...lecture.data.videos,
 ];
 ---
 
 <ContentLayout title={lecture.data.title} description={lecture.data.summary} eyebrow={date} lang={lecture.data.language}>
-  {lecture.data.speaker && <p class="meta">{translated(locale, "Speaker: ", "主讲人：")}{lecture.data.speaker}</p>}
-  {lecture.data.location && <p class="meta">{translated(locale, "Location: ", "地点：")}{lecture.data.location}</p>}
-  {lecture.data.slides && <p>{translated(locale, "Slides: ", "课件：")}<a href={lecture.data.slides}>{translated(locale, "View slides ↗", "查看课件 ↗")}</a></p>}
+  {lecture.data.speaker && <p class="meta">Speaker: {lecture.data.speaker}</p>}
+  {lecture.data.location && <p class="meta">Location: {lecture.data.location}</p>}
+  {lecture.data.slides && <p>Slides: <a href={lecture.data.slides}>View slides ↗</a></p>}
   {
     videos.length > 0 && (
       <section class="recordings" aria-labelledby="recordings-title">
-        <h2 id="recordings-title">{translated(locale, "Recordings", "课程录播")}</h2>
+        <h2 id="recordings-title">Recordings</h2>
         <ul class="recording-list">
           {videos.map((video) => (
             <li>

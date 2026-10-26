@@ -1,9 +1,7 @@
 ---
-import { localeFromPath, localizedPath, localizedSite, translated } from "../utils/i18n";
+import { site } from "../data/site";
 
-const locale = localeFromPath(Astro.url.pathname);
-const site = localizedSite(locale);
-const pathname = localizedPath(Astro.url.pathname, "en").replace(/\/+$/, "") || "/";
+const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const navigation = site.nav.map((item) => {
   const path = item.href.replace(/\/+$/, "") || "/";
   const isLocation = path !== "/" && pathname.startsWith(`${path}/`);
@@ -19,23 +17,16 @@ const navigation = site.nav.map((item) => {
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href={localizedPath("/", locale)}>{site.name}</a>
-    <div class="navigation-controls">
-    <nav aria-label={translated(locale, "Primary navigation", "主导航")}>
+    <a class="brand" href="/">{site.name}</a>
+    <nav aria-label="Primary navigation">
       {
         navigation.map((item) => (
-          <a href={localizedPath(item.href, locale)} aria-current={item.current}>
+          <a href={item.href} aria-current={item.current}>
             {item.label}
           </a>
         ))
       }
     </nav>
-    <nav class="language-switch" aria-label={translated(locale, "Language", "语言")}>
-      <a href={localizedPath(Astro.url.pathname, "en")} lang="en" hreflang="en" aria-current={locale === "en" ? "page" : undefined} aria-label="English">EN</a>
-      <span aria-hidden="true">/</span>
-      <a href={localizedPath(Astro.url.pathname, "zh-CN")} lang="zh-CN" hreflang="zh-CN" aria-current={locale === "zh-CN" ? "page" : undefined} aria-label="切换到中文">中文</a>
-    </nav>
-    </div>
   </div>
 </header>
 
@@ -57,13 +48,7 @@ const navigation = site.nav.map((item) => {
     color: var(--text);
     font-size: 0.85rem;
     font-weight: 600;
-    flex-shrink: 0;
   }
-
-  .navigation-controls { display: flex; align-items: center; justify-content: flex-end; gap: 24px; }
-  .language-switch { flex-shrink: 0; align-items: center; flex-wrap: nowrap; gap: 7px; padding-left: 20px; border-left: 1px solid var(--border); }
-  .language-switch a { font-size: .75rem; }
-  .language-switch span { color: var(--border); font-size: .75rem; }
 
   nav {
     display: flex;
@@ -91,7 +76,7 @@ const navigation = site.nav.map((item) => {
     border-bottom-color: var(--accent);
   }
 
-  @media (max-width: 1000px) {
+  @media (max-width: 720px) {
     .header-inner {
       align-items: flex-start;
       flex-direction: column;
@@ -102,13 +87,6 @@ const navigation = site.nav.map((item) => {
     nav {
       justify-content: flex-start;
     }
-    .navigation-controls { width: 100%; justify-content: space-between; gap: 16px; }
-  }
-  @media (max-width: 540px) {
-    .navigation-controls { align-items: flex-start; gap: 14px; }
-    nav { gap: 4px 14px; }
-    .language-switch { padding-left: 12px; gap: 5px; }
-    nav a { font-size: .8rem; }
   }
 </style>
 

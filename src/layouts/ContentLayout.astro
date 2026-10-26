@@ -4,7 +4,6 @@ import InlineMathText from "../components/InlineMathText.astro";
 
 interface Props {
   title: string;
-  originalTitle?: string;
   description?: string;
   metaDescription?: string;
   eyebrow?: string;
@@ -13,14 +12,13 @@ interface Props {
   wide?: boolean;
 }
 
-const { title, originalTitle, description, metaDescription = description, eyebrow, lang, wide = false } = Astro.props;
+const { title, description, metaDescription = description, eyebrow, lang, wide = false } = Astro.props;
 ---
 
 <BaseLayout title={title} description={metaDescription} lang={lang}>
-  <article lang={lang} class:list={["container", "page", "reading-page", { wide }]}>
+  <article class:list={["container", "page", "reading-page", { wide }]}>
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h1 class="page-title"><InlineMathText text={title} /></h1>
-    {originalTitle && <p class="original-title" lang="en"><InlineMathText text={originalTitle} /></p>}
     {description && <p class="lead"><InlineMathText text={description} /></p>}
     <div class="prose section">
       <slot />
@@ -55,7 +53,6 @@ const { title, originalTitle, description, metaDescription = description, eyebro
   }
 
   .page-title { text-wrap: balance; }
-  .original-title { margin: var(--space-3) 0 0; max-width: 70ch; color: var(--muted); font-size: var(--text-lead); line-height: 1.6; }
 
   .reading-page :global(.math) {
     display: inline-block;

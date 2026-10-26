@@ -1,27 +1,25 @@
 ---
-import { localizedCollection } from "../../utils/localizedContent";
-import { localeFromPath, translated } from "../../utils/i18n";
+import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PersonCard from "../../components/PersonCard.astro";
 
-const locale = localeFromPath(Astro.url.pathname);
-const people = (await localizedCollection("people", locale)).sort(
+const people = (await getCollection("people")).sort(
   (a, b) => a.data.order - b.data.order || a.data.name.localeCompare(b.data.name),
 );
 const groups = [
-  { id: "faculty", title: translated(locale, "Faculty", "教师") },
-  { id: "postdocs", title: translated(locale, "Postdocs", "博士后") },
-  { id: "students", title: translated(locale, "Students", "学生") },
-  { id: "alumni", title: translated(locale, "Alumni", "往届成员") },
+  { id: "faculty", title: "Faculty" },
+  { id: "postdocs", title: "Postdocs" },
+  { id: "students", title: "Students" },
+  { id: "alumni", title: "Alumni" },
 ] as const;
 ---
 
-<BaseLayout title={translated(locale, "People", "成员")} description={translated(locale, "Meet the faculty, postdocs, students and alumni of the Laboratory of Quantum Integrability at Southeast University. Read member profiles and research interests.", "了解东南大学量子可积实验室的教师、博士后、学生及往届成员，浏览成员简介与研究方向。")}>
+<BaseLayout title="People" description="Meet the faculty, postdocs, students and alumni of the Laboratory of Quantum Integrability at Southeast University. Read member profiles and research interests.">
   <section class="container page">
-    <p class="eyebrow">{translated(locale, "Members", "实验室成员")}</p>
-    <h1 class="page-title">{translated(locale, "People", "成员")}</h1>
-    <p class="lead">{translated(locale, "Faculty, postdocs, students, and alumni of the lab.", "汇聚教师、博士后、学生与往届成员。")}</p>
-    <nav class="people-nav" aria-label={translated(locale, "People categories", "成员分类")}>
+    <p class="eyebrow">Members</p>
+    <h1 class="page-title">People</h1>
+    <p class="lead">Faculty, postdocs, students, and alumni of the lab.</p>
+    <nav class="people-nav" aria-label="People categories">
       {groups.map(group => <a href={`#${group.id}`}>{group.title}<span aria-hidden="true">↗</span></a>)}
     </nav>
     {groups.map((group, index) => {
@@ -32,7 +30,7 @@ const groups = [
           {members.length > 0 ? (
             <div class="grid two">{members.map(person => <PersonCard person={person} />)}</div>
           ) : (
-            <p class="empty-group">{translated(locale, "Member profiles will be added soon.", "成员信息将陆续更新。")}</p>
+            <p class="empty-group">Member profiles will be added soon.</p>
           )}
         </section>
       );
@@ -46,7 +44,7 @@ const groups = [
   .people-nav span { color:var(--muted); }
   .people-group { margin-top:44px; scroll-margin-top:24px; }
   .people-group .grid.two { column-gap: 2.25rem; }
-  .group-title { display:flex; gap:18px; align-items:baseline; margin:0 0 22px; font:normal 30px/1.2 var(--font-editorial); }
+  .group-title { display:flex; gap:18px; align-items:baseline; margin:0 0 22px; font:normal 30px/1.2 Georgia,serif; }
   .group-title span { color:var(--muted); font:11px ui-monospace,monospace; }
   .empty-group { margin:0; padding:4px 0 16px; color:var(--muted); font-size:.95rem; }
 </style>

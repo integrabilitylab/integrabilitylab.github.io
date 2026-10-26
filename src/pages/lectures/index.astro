@@ -1,20 +1,18 @@
 ---
-import { localizedCollection } from "../../utils/localizedContent";
-import { localeFromPath, translated } from "../../utils/i18n";
+import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import EventItem from "../../components/EventItem.astro";
 
-const locale = localeFromPath(Astro.url.pathname);
-const lectures = (await localizedCollection("lectures", locale)).sort(
+const lectures = (await getCollection("lectures")).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 ---
 
-<BaseLayout title={translated(locale, "Lectures", "课程与讲座")} description={translated(locale, "Lectures on quantum integrability, integrable systems and AdS/CFT by Yunfeng Jiang. Browse course recordings, lecture notes and slides.", "江云峰教授关于量子可积性、可积系统和 AdS/CFT 的系列课程与讲座，提供录播、讲义与课件。")}>
+<BaseLayout title="Lectures" description="Lectures on quantum integrability, integrable systems and AdS/CFT by Yunfeng Jiang. Browse course recordings, lecture notes and slides.">
   <section class="container page">
-    <p class="eyebrow">{translated(locale, "Teaching", "教学资源")}</p>
-    <h1 class="page-title">{translated(locale, "Lectures", "课程与讲座")}</h1>
-    <p class="lead">{translated(locale, "Lecture series, notes, slides, and recordings.", "系列讲座、课程讲义、课件与视频录播。")}</p>
+    <p class="eyebrow">Teaching</p>
+    <h1 class="page-title">Lectures</h1>
+    <p class="lead">Lecture series, notes, slides, and recordings.</p>
 
     <div class="stack section">
       {lectures.map((lecture) => <EventItem item={lecture} />)}

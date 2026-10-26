@@ -15,10 +15,7 @@ const dateFormatters = {
   }),
 };
 
-export function formatDate(date: Date, month: "short" | "long" = "short", locale: "en" | "zh-CN" = "en") {
-  if (locale === "zh-CN") return new Intl.DateTimeFormat("zh-CN", {
-    year: "numeric", month: "long", day: "numeric", timeZone: SITE_TIME_ZONE,
-  }).format(date);
+export function formatDate(date: Date, month: "short" | "long" = "short") {
   return dateFormatters[month].format(date);
 }
 

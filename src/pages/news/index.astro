@@ -1,22 +1,20 @@
 ---
-import { localizedCollection } from "../../utils/localizedContent";
-import { localeFromPath, translated } from "../../utils/i18n";
+import { getCollection } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ContentList from "../../components/ContentList.astro";
 
-const locale = localeFromPath(Astro.url.pathname);
-const news = await localizedCollection("news", locale);
-const events = await localizedCollection("events", locale);
+const news = await getCollection("news");
+const events = await getCollection("events");
 const updates = [...news, ...events].sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
 ---
 
-<BaseLayout title={translated(locale, "News & Events", "新闻与活动")} description={translated(locale, "Research news, announcements, courses and events from the Laboratory of Quantum Integrability at Southeast University.", "东南大学量子可积实验室的研究动态、通知公告、课程与学术活动。")}>
+<BaseLayout title="News & Events" description="Research news, announcements, courses and events from the Laboratory of Quantum Integrability at Southeast University.">
   <section class="container page">
-    <p class="eyebrow">{translated(locale, "Updates", "实验室动态")}</p>
-    <h1 class="page-title">{translated(locale, "News & Events", "新闻与活动")}</h1>
-    <p class="lead">{translated(locale, "Announcements, updates, and activities from the lab.", "关注实验室的最新研究、通知与学术活动。")}</p>
+    <p class="eyebrow">Updates</p>
+    <h1 class="page-title">News & Events</h1>
+    <p class="lead">Announcements, updates, and activities from the lab.</p>
 
     <div class="section" id="updates">
       <ContentList items={updates} />
