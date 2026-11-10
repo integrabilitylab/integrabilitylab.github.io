@@ -26,16 +26,26 @@
   <figcaption><span class="equation">R₁₂ R₁₃ R₂₃ = R₂₃ R₁₃ R₁₂</span><span>Different paths. The same structure.</span></figcaption>
 </figure>
 <style>
-  .integrability-art { margin: 0; color: var(--accent); padding: 24px; border: 1px solid var(--tint-border); background: var(--tint); position: relative; }
-  .figure-heading { display: flex; justify-content: space-between; gap: 16px; font: 9px/1.5 ui-monospace, monospace; letter-spacing: .09em; }
-  svg { display: block; width: 100%; margin-block: 20px 8px; }
-  figcaption { display: grid; gap: 10px; text-align: center; font-size: 11px; color: var(--art-muted); }
-  .equation { font: 20px/1.5 Georgia, serif; color: var(--accent); }
+  .integrability-art {
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 26px;
+    border: 1px solid var(--tint-border);
+    border-radius: var(--radius-large);
+    background: linear-gradient(145deg, rgb(255 255 255 / 58%), transparent 48%), var(--tint);
+    box-shadow: var(--shadow-medium);
+    color: var(--accent);
+  }
+  .figure-heading { display: flex; justify-content: space-between; gap: 16px; color: var(--art-muted); font: 9px/1.5 var(--font-mono); letter-spacing: .1em; }
+  svg { display: block; width: 100%; margin-block: 20px 12px; }
+  figcaption { display: grid; gap: 8px; padding-top: 14px; border-top: 1px solid rgb(82 108 97 / 16%); text-align: center; color: var(--art-muted); font-size: 11px; }
+  .equation { color: var(--accent); font: 20px/1.5 var(--font-editorial); letter-spacing: .025em; }
   @media(max-width: 600px) {
-    .integrability-art { padding: var(--space-2); }
+    .integrability-art { padding: var(--space-2); border-radius: var(--radius-medium); box-shadow: var(--shadow-small); }
     .figure-heading { font-size: 8px; }
     svg { height: auto; margin-block: var(--space-1); }
-    figcaption { gap: 4px; font-size: 10px; }
+    figcaption { gap: 4px; padding-top: 10px; font-size: 10px; }
     .equation { font-size: 18px; }
   }
 </style>

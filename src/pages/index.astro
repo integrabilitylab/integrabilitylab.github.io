@@ -12,53 +12,148 @@ const updates = [...await getCollection("news"), ...await getCollection("events"
 <BaseLayout title="Home" description={site.metaDescription}>
   <section class="container hero">
     <div class="hero-copy">
-      <p class="eyebrow">QUANTUM PHYSICS · MATHEMATICAL STRUCTURES</p>
+      <p class="eyebrow">Quantum physics · Mathematical structures</p>
       <h1>Laboratory of<br />Quantum <em>Integrability</em></h1>
       {site.description && <p class="lead">{site.description}</p>}
-      <div class="hero-links"><a class="text-link" href="/about/">About the laboratory <span aria-hidden="true">→</span></a></div>
+      <div class="hero-links">
+        <a class="primary-link" href="/publications/">Explore our research <span aria-hidden="true">↗</span></a>
+        <a class="text-link" href="/about/">About the laboratory <span aria-hidden="true">→</span></a>
+      </div>
     </div>
-    <IntegrabilityArt />
+    <div class="hero-visual"><IntegrabilityArt /></div>
   </section>
   <div class="container spin-strip" aria-hidden="true"><span>QUANTUM INTEGRABILITY</span><div class="chain">{Array.from({length:12}, (_,i) => <span>{i%2 ? '↓' : '↑'}</span>)}</div><span>STRUCTURE THROUGH SYMMETRY</span></div>
   <div class="container updates">
-    <section><div class="section-heading"><h2><span>01</span> News & Events</h2><a href="/news/">All news & events ↗</a></div><ContentList items={updates} headingLevel="h3" /></section>
-    <section><div class="section-heading"><h2><span>02</span> Publications</h2><a href="/publications/">All publications ↗</a></div><div class="stack">{publications.map(publication => <PublicationItem publication={publication} headingLevel="h3" />)}</div></section>
+    <section class="update-panel" aria-labelledby="home-updates-title">
+      <div class="section-heading"><h2 id="home-updates-title"><span>01</span> News & Events</h2><a href="/news/">All news & events <span aria-hidden="true">↗</span></a></div>
+      <ContentList items={updates} headingLevel="h3" />
+    </section>
+    <section class="update-panel" aria-labelledby="home-publications-title">
+      <div class="section-heading"><h2 id="home-publications-title"><span>02</span> Publications</h2><a href="/publications/">All publications <span aria-hidden="true">↗</span></a></div>
+      <div class="stack">{publications.map(publication => <PublicationItem publication={publication} headingLevel="h3" />)}</div>
+    </section>
   </div>
-  <section class="container links-section"><div class="section-heading"><h2><span>03</span> Useful Links</h2></div><UsefulLinks /></section>
+  <section class="container links-section" aria-labelledby="home-links-title"><div class="section-heading"><h2 id="home-links-title"><span>03</span> Useful Links</h2></div><UsefulLinks /></section>
 </BaseLayout>
 <style>
-  .hero { display:grid; grid-template-columns:minmax(0,1.1fr) minmax(0,1fr); gap:var(--space-5); align-items:center; padding-block:var(--space-6) 3.75rem; }
-  .hero-copy { min-width:0; }
-  h1 { font: normal clamp(2.6rem,4.7vw,4.5rem)/1.08 var(--font-editorial); letter-spacing:-.045em; margin:var(--space-3) 0; }
-  h1 em { color:var(--accent); font-weight:normal; }
-  .hero .lead { max-width:38ch; margin-bottom:var(--space-4); color:var(--accent-strong); font:italic 1.3rem/1.5 var(--font-editorial); letter-spacing:-.01em; }
-  .hero-links { display:flex; flex-wrap:wrap; gap:24px; align-items:center; font-size:13px; }
-  .text-link { border-bottom:1px solid var(--border); padding-block:8px; }
-  .spin-strip { display:flex; align-items:center; justify-content:space-between; gap:24px; border-block:1px solid var(--border); padding-block:22px; font:10px/1.5 ui-monospace,monospace; letter-spacing:.1em; color:var(--muted); }
-  .chain { display:flex; align-items:center; flex:1; max-width:340px; justify-content:space-between; position:relative; }
-  .chain:before { content:''; position:absolute; height:1px; background:var(--border); width:100%; }
-  .chain span { position:relative; border:1px solid var(--spin-border); border-radius:50%; width:19px; height:19px; background:var(--background); text-align:center; color:var(--accent); font-size:12px; }
-  .updates { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-5); padding-block:var(--space-5); }
-  .section-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:22px; }
-  .section-heading h2 { font:normal 1.75rem var(--font-editorial); margin:0; }
-  .section-heading h2 span { font:11px ui-monospace,monospace; color:var(--muted); margin-right:14px; }
-  .section-heading > a { font-size:.75rem; flex-shrink:0; }
-  .links-section { padding-bottom:var(--space-6); }
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    gap: clamp(3rem, 5vw, 5rem);
+    align-items: center;
+    padding-block: var(--space-6) 4rem;
+  }
+  .hero-copy { min-width: 0; }
+  .hero .eyebrow { display: flex; align-items: center; gap: 10px; margin: 0; }
+  .hero .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--accent-warm); }
+  h1 {
+    margin: var(--space-3) 0 20px;
+    font: normal clamp(2.8rem, 4.9vw, 4.75rem)/1.04 var(--font-editorial);
+    letter-spacing: -.05em;
+  }
+  h1 em { color: var(--accent); font-weight: normal; }
+  .hero .lead {
+    max-width: 38ch;
+    margin: 0 0 28px;
+    color: var(--accent-strong);
+    font: italic 1.25rem/1.55 var(--font-editorial);
+    letter-spacing: -.01em;
+  }
+  .hero-links { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; font-size: .8rem; }
+  .primary-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding: 12px 18px;
+    border: 1px solid var(--accent);
+    border-radius: 999px;
+    background: var(--accent);
+    box-shadow: 0 8px 20px rgb(31 100 84 / 13%);
+    color: #fffefa;
+    font-weight: 600;
+    transition: background-color .18s ease, border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+  .primary-link:hover {
+    border-color: var(--accent-strong);
+    background: var(--accent-strong);
+    box-shadow: 0 10px 24px rgb(31 100 84 / 18%);
+    color: #fffefa;
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+  .text-link { display: inline-flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--link-underline); padding-block: 9px; }
+  .text-link:hover { border-color: var(--accent); text-decoration: none; }
+  .hero-visual { position: relative; isolation: isolate; min-width: 0; }
+  .hero-visual::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 18px -14px -14px 18px;
+    border: 1px solid var(--tint-border);
+    border-radius: var(--radius-large);
+    background: rgb(255 254 250 / 30%);
+  }
+  .spin-strip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    border-block: 1px solid var(--border);
+    padding-block: 20px;
+    color: var(--muted);
+    font: 10px/1.5 var(--font-mono);
+    letter-spacing: .1em;
+  }
+  .chain { display: flex; align-items: center; flex: 1; max-width: 340px; justify-content: space-between; position: relative; }
+  .chain::before { content: ''; position: absolute; width: 100%; height: 1px; background: var(--border); }
+  .chain span { position: relative; width: 21px; height: 21px; border: 1px solid var(--spin-border); border-radius: 50%; background: var(--background); color: var(--accent); font-size: 12px; text-align: center; }
+  .updates { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: stretch; padding-block: 4rem; }
+  .update-panel {
+    min-width: 0;
+    padding: 28px 28px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-large);
+    background: rgb(255 254 250 / 72%);
+    box-shadow: var(--shadow-small);
+  }
+  .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 0; padding-bottom: 22px; border-bottom: 1px solid var(--border); }
+  .section-heading h2 { margin: 0; font: normal 1.7rem/1.2 var(--font-editorial); letter-spacing: -.02em; }
+  .section-heading h2 span { margin-right: 14px; color: var(--muted); font: 10px var(--font-mono); letter-spacing: .04em; }
+  .section-heading > a { display: inline-flex; align-items: center; gap: 5px; flex-shrink: 0; font-size: .72rem; }
+  .update-panel :global(.content-entry) { margin-inline: -12px; padding-inline: 12px; }
+  .update-panel :global(.content-entry:first-child) { border-top: 0; }
+  .links-section { padding-bottom: var(--space-6); }
+  .links-section .section-heading { margin-bottom: 24px; padding-bottom: 0; border-bottom: 0; }
+  @media(max-width:1000px) {
+    .update-panel { padding-inline: 20px; }
+    .section-heading h2 { font-size: 1.5rem; }
+  }
   @media(max-width:900px) {
-    .hero { grid-template-columns:minmax(0,1fr); gap:var(--space-4); padding-block:var(--space-5); }
-    .hero :global(.integrability-art) { width:100%; max-width:560px; justify-self:center; }
-    .updates { grid-template-columns:minmax(0,1fr); gap:var(--space-4); }
-    .spin-strip > span:last-child { display:none; }
+    .hero { grid-template-columns: minmax(0, 1fr); gap: var(--space-5); padding-block: var(--space-5); }
+    .hero-copy { max-width: 650px; }
+    .hero-visual { width: 100%; max-width: 620px; justify-self: center; }
+    .hero :global(.integrability-art) { width: 100%; }
+    .updates { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+    .spin-strip > span:last-child { display: none; }
   }
   @media(max-width:600px) {
-    .hero { padding-block:var(--space-4) var(--space-3); gap:var(--space-3); }
-    .hero .eyebrow { margin-top:0; font-size:.6rem; letter-spacing:.1em; }
-    h1 { font-size:clamp(2.1rem,7vw,2.7rem); margin-block:var(--space-2); }
-    .hero .lead { font-size:1.1rem; margin-bottom:var(--space-1); }
-    .spin-strip { display:none; }
-    .updates { padding-block:var(--space-3); }
-    .section-heading { flex-wrap:wrap; gap:var(--space-1) var(--space-2); margin-bottom:var(--space-2); }
-    .section-heading h2 { font-size:1.5rem; }
-    .links-section { padding-bottom:var(--space-5); }
+    .hero { gap: 2.25rem; padding-block: 2.5rem 2.75rem; }
+    .hero .eyebrow { font-size: .58rem; letter-spacing: .1em; }
+    .hero .eyebrow::before { width: 20px; }
+    h1 { margin-block: 20px 16px; font-size: clamp(2.15rem, 8.5vw, 2.8rem); line-height: 1.08; }
+    .hero .lead { max-width: 30ch; margin-bottom: 22px; font-size: 1.08rem; }
+    .hero-links { gap: 10px 20px; font-size: .76rem; }
+    .primary-link { gap: 12px; padding: 11px 15px; }
+    .hero-visual::before { inset: 12px -8px -8px 12px; }
+    .spin-strip { display: none; }
+    .updates { gap: 20px; padding-block: 2.5rem; }
+    .update-panel { padding: 22px 14px 8px; border-radius: var(--radius-medium); }
+    .section-heading { flex-wrap: wrap; gap: 12px; padding-bottom: 18px; }
+    .section-heading h2 { font-size: 1.45rem; }
+    .links-section { padding-bottom: var(--space-5); }
+  }
+  @media(prefers-reduced-motion:reduce) {
+    .primary-link { transition: none; }
+    .primary-link:hover { transform: none; }
   }
 </style>

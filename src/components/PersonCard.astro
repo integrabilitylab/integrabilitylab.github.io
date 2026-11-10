@@ -9,6 +9,7 @@ interface Props {
       chineseName?: string;
       role: string;
       avatar?: string;
+      email?: string;
       interests?: string[];
     };
   };
@@ -21,18 +22,27 @@ const fullName = [person.data.name, person.data.chineseName].filter(Boolean).joi
 <article class:list={["person-card", { "no-portrait": !person.data.avatar }]}>
   {
     person.data.avatar && (
-      <img src={person.data.avatar} alt={`${fullName} portrait`} width="120" height="180" />
+      <img src={person.data.avatar} alt={`${fullName} portrait`} width="112" height="148" />
     )
   }
   <div class="identity">
     <h3><a href={`/people/${person.id}/`}><PersonName name={person.data.name} chineseName={person.data.chineseName} /></a></h3>
     <p class="meta">{person.data.role}</p>
+    {person.data.email && (
+      <a class="email" href={`mailto:${person.data.email}`}>
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="1.5" y="3" width="13" height="10" rx="1.5" stroke="currentColor" /><path d="m2.5 4 5.5 4.5L13.5 4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        <span>{person.data.email}</span>
+      </a>
+    )}
   </div>
   {
     person.data.interests && person.data.interests.length > 0 && (
-      <ul class="interests">
-        {person.data.interests.map((interest) => <li><InlineMathText text={interest} /></li>)}
-      </ul>
+      <section class="research">
+        <h4>Research interests</h4>
+        <ul class="interests">
+          {person.data.interests.map((interest) => <li><InlineMathText text={interest} /></li>)}
+        </ul>
+      </section>
     )
   }
 </article>
@@ -40,51 +50,99 @@ const fullName = [person.data.name, person.data.chineseName].filter(Boolean).joi
 <style>
   .person-card {
     display: grid;
-    grid-template-columns: 120px minmax(0, 1fr);
-    grid-template-rows: auto 1fr;
-    gap: var(--space-1) 1.75rem;
+    grid-template-columns: 88px minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    gap: 18px 20px;
     align-items: start;
     margin-inline: calc(-1 * var(--space-2));
-    padding: var(--space-3) var(--space-2) 1.75rem;
+    padding: 22px var(--space-2);
     border-top: 1px solid var(--border);
+    border-radius: var(--radius-small);
   }
 
   img {
-    width: 120px;
-    height: 180px;
-    grid-row: 1 / span 2;
-    border-radius: 4px;
+    width: 88px;
+    height: 118px;
+    grid-row: 1;
+    border-radius: var(--radius-small);
+    box-shadow: 0 5px 16px rgb(20 63 53 / 8%);
     object-fit: cover;
     object-position: top;
   }
 
-  .identity, .interests { grid-column: 2; min-width: 0; }
+  .identity { grid-column: 2; align-self: center; min-width: 0; }
   .no-portrait { grid-template-columns: minmax(0, 1fr); }
-  .no-portrait :is(.identity, .interests) { grid-column: 1; }
+  .no-portrait .identity { grid-column: 1; }
 
-  h3 {
-    margin: 0;
-    font-size: var(--text-entry);
-    line-height: 1.25;
+  h3 { margin: 0; font-size: var(--text-entry); line-height: 1.25; }
+  p { margin: 6px 0 0; }
+  .email {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    max-width: 100%;
+    margin-top: 10px;
+    font-size: .78rem;
+    line-height: 1.5;
+  }
+  .email svg { flex: 0 0 14px; width: 14px; height: 14px; }
+  .email span { overflow-wrap: anywhere; }
+
+  .research {
+    display: flex;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    padding: 16px 18px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-small);
+    background: rgb(255 254 250 / 68%);
+  }
+  h4 {
+    margin: 0 0 10px;
+    color: var(--muted);
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .13em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+  ul { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  li { position: relative; padding-left: 15px; font-size: .82rem; line-height: 1.5; overflow-wrap: anywhere; }
+  li::before {
+    content: '';
+    position: absolute;
+    top: .6em;
+    left: 1px;
+    width: 5px;
+    height: 5px;
+    border: 1px solid var(--accent);
+    transform: rotate(45deg);
   }
 
-  p {
-    margin: 6px 0 0;
-  }
-
-  ul {
-    margin: 0;
-    padding-left: 18px;
-  }
-
-  li {
-    margin: 2px 0;
-  }
-  @media (max-width: 480px) {
-    .person-card { grid-template-columns: 80px minmax(0, 1fr); gap: var(--space-2); }
-    img { width: 80px; height: 108px; grid-row: 1; }
-    .identity { align-self: center; }
-    .interests { grid-column: 1 / -1; }
+  @media (min-width: 600px) {
+    .person-card { grid-template-columns: 104px minmax(0, 1fr); gap: 18px 24px; }
+    img { width: 104px; height: 144px; grid-row: 1 / span 2; }
+    .research { grid-column: 2; }
     .no-portrait { grid-template-columns: minmax(0, 1fr); }
+    .no-portrait .research { grid-column: 1; }
+  }
+
+  @media (min-width: 901px) {
+    .person-card {
+      grid-template-columns: 112px minmax(220px, .75fr) minmax(320px, 1.25fr);
+      grid-template-rows: auto;
+      gap: 0 28px;
+      align-items: stretch;
+      padding-block: 24px;
+    }
+    img { width: 112px; height: 148px; grid-row: 1; }
+    .identity { grid-column: 2; grid-row: 1; }
+    .research { grid-column: 3; grid-row: 1; padding: 18px 20px; }
+    .no-portrait { grid-template-columns: minmax(220px, .75fr) minmax(320px, 1.25fr); }
+    .no-portrait .identity { grid-column: 1; }
+    .no-portrait .research { grid-column: 2; grid-row: 1; }
   }
 </style>

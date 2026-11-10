@@ -1,5 +1,6 @@
 ---
 import { site } from "../data/site";
+import LabMark from "./LabMark.astro";
 
 const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
 const navigation = site.nav.map((item) => {
@@ -17,7 +18,13 @@ const navigation = site.nav.map((item) => {
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href="/">{site.name}</a>
+    <a class="brand" href="/" aria-label={`${site.name}, home`}>
+      <span class="brand-mark"><LabMark /></span>
+      <span class="brand-copy">
+        <span class="brand-title">Integrability Lab</span>
+        <span class="brand-affiliation">Southeast University</span>
+      </span>
+    </a>
     <nav aria-label="Primary navigation">
       {
         navigation.map((item) => (
@@ -32,8 +39,15 @@ const navigation = site.nav.map((item) => {
 
 <style>
   .site-header {
+    position: relative;
+    z-index: 20;
     border-bottom: 1px solid var(--border);
-    background: var(--surface);
+    background: rgb(255 254 250 / 90%);
+    box-shadow: 0 1px 12px rgb(24 63 55 / 3%);
+  }
+
+  @supports (backdrop-filter: blur(12px)) {
+    .site-header { backdrop-filter: blur(14px); }
   }
 
   .header-inner {
@@ -41,52 +55,81 @@ const navigation = site.nav.map((item) => {
     min-height: 88px;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
+    gap: 32px;
   }
 
   .brand {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 12px;
     color: var(--text);
-    font-size: 0.85rem;
-    font-weight: 600;
+  }
+
+  .brand:hover { text-decoration: none; }
+  .brand-mark { width: 44px; height: 44px; color: var(--accent); }
+  .brand-copy { display: grid; gap: 3px; }
+  .brand-title { font: 1.12rem/1.15 var(--font-editorial); letter-spacing: -.015em; }
+  .brand-affiliation {
+    color: var(--muted);
+    font-size: .57rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    line-height: 1.4;
+    text-transform: uppercase;
   }
 
   nav {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
+    gap: 4px;
     justify-content: flex-end;
   }
 
   nav a {
-    padding-block: 8px;
-    border-bottom: 2px solid transparent;
+    padding: 8px 10px;
+    border-radius: 999px;
     color: var(--muted);
-    font-size: 0.85rem;
+    font-size: .8rem;
     font-weight: 600;
+    white-space: nowrap;
+    transition: color .18s ease, background-color .18s ease;
   }
 
   nav a[aria-current] {
+    background: var(--tint);
     color: var(--accent-strong);
-    border-bottom-color: var(--accent);
   }
 
   nav a:hover {
+    background: var(--surface-hover);
     color: var(--accent-strong);
     text-decoration: none;
-    border-bottom-color: var(--accent);
   }
 
-  @media (max-width: 720px) {
+  @media (min-width: 861px) {
+    .site-header { position: sticky; top: 0; }
+  }
+
+  @media (max-width: 860px) {
     .header-inner {
       align-items: flex-start;
       flex-direction: column;
       gap: 12px;
-      padding-block: 18px;
+      padding-block: 16px 14px;
     }
 
-    nav {
-      justify-content: flex-start;
-    }
+    nav { width: 100%; justify-content: flex-start; }
+  }
+
+  @media (max-width: 480px) {
+    .brand-mark { width: 40px; height: 40px; }
+    .brand-title { font-size: 1.05rem; }
+    nav { gap: 2px; }
+    nav a { padding: 7px 8px; font-size: .75rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    nav a { transition: none; }
   }
 </style>
-
