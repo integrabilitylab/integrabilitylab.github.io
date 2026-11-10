@@ -1,12 +1,14 @@
 ---
-name: "柳艺超（Yi-Chao Liu）"
-role: "PhD student"
-category: "students"
+name: "LIU Yi-Chao（柳艺超）"
+role: "Ph.D. Student"
+category: students
+avatar: "/images/people/yi-chao-liu.jpg"
 email: "iqna@seu.edu.cn"
 interests:
-  - "Q-system and its mathematical structure"
-  - "Integrability in QCD"
-  - "Quantum chaos"
-avatar: "/images/people/yi-chao-liu.png"
+  - Q-system and its mathematical structure
+  - Integrability in QCD
+  - Quantum chaos
+order: 2
 ---
+
 Real in Life, Real in Physics.
