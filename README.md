@@ -7,6 +7,7 @@ Our group studies integrability and its applications across mathematical physics
 ## Development
 
 The site is built with [Astro](https://astro.build/) and uses content collections for publications, people, lectures, news, and events.
+Use Node.js 22.19.0 or newer, as required by the dependency tree.
 
 Install dependencies:
 
@@ -40,10 +41,13 @@ Run all checks before opening a pull request:
 npm run validate
 ```
 
-This runs Astro's type checker, regression tests, the production build, and a
-check of the generated pages for broken local links, missing anchors, duplicate
-IDs, and invalid metadata. Pull requests to `dev` and `main`, and pushes to
-`dev`, run these checks automatically. Deployment to GitHub Pages also runs them.
+This audits dependencies against the official npm registry, then runs Astro's type
+checker, regression tests, the production build, and a check of the generated
+pages for broken local links, missing anchors, duplicate IDs, and invalid metadata.
+Canonical URLs must use HTTPS, the configured site origin, and the page's route
+(or the destination route for redirect pages), without queries or fragments.
+Pull requests to `dev` and `main`, and pushes to `dev`, run these checks
+automatically. Deployment to GitHub Pages also runs them.
 
 ## Content conventions
 

@@ -13,6 +13,12 @@ function textContent(node) {
   return (node.childNodes ?? []).map(textContent).join("");
 }
 
+function refreshTarget(attrs) {
+  return attrs["http-equiv"]?.toLowerCase() === "refresh"
+    ? attrs.content?.match(/url\s*=\s*(.+)$/i)?.[1].trim().replace(/^(['"])(.*)\1$/, "$2")
+    : undefined;
+}
+
 export function checkSite(root, site) {
   const base = new URL(site);
   const files = fs.readdirSync(root, { recursive: true }).filter((file) => file.endsWith(".html"));
@@ -33,38 +39,67 @@ export function checkSite(root, site) {
       }
       elements.push({ node, attrs });
     });
-    pages.set(route, { file, elements, ids });
+    pages.set(route, { route, file, elements, ids });
+  }
+
+  // Directory routes, their slashless form and explicit index.html URLs share a page.
+  function pageForPath(pathname) {
+    const route = pathname.replace(/\/index\.html$/, "/");
+    return pages.get(route) ?? pages.get(`${route}/`);
   }
 
   for (const [route, { file, elements }] of pages) {
-    const isRedirect = elements.some(({ attrs }) => attrs["http-equiv"]?.toLowerCase() === "refresh");
+    const redirect = elements.find(({ node, attrs }) => node.tagName === "meta" && attrs["http-equiv"]?.toLowerCase() === "refresh");
+    const isRedirect = Boolean(redirect);
     const title = elements.find(({ node }) => node.tagName === "title");
     const description = elements.find(({ attrs }) => attrs.name === "description");
-    const canonical = elements.find(({ attrs }) => attrs.rel === "canonical");
+    const canonical = elements.find(({ node, attrs }) => node.tagName === "link" && attrs.rel === "canonical");
     if (!title || !textContent(title.node).trim()) errors.push(`${file}: missing title`);
-    if (!canonical) errors.push(`${file}: missing canonical URL`);
+    if (!canonical?.attrs.href?.trim()) {
+      errors.push(`${file}: missing canonical URL`);
+    } else {
+      const href = canonical.attrs.href;
+      try {
+        // Resolve redirect aliases to the destination's canonical route, without its fragment.
+        const expected = new URL((redirect && refreshTarget(redirect.attrs)) ?? route, base);
+        const destination = pageForPath(decodeURIComponent(expected.pathname));
+        if (destination) expected.pathname = new URL(destination.route, base).pathname;
+        expected.search = "";
+        expected.hash = "";
+        const url = new URL(href);
+        if (url.protocol !== "https:" || url.origin !== base.origin || url.href !== expected.href) {
+          errors.push(`${file}: invalid canonical URL ${href} (expected ${expected.href})`);
+        }
+      } catch {
+        errors.push(`${file}: invalid canonical URL ${href}`);
+      }
+    }
     if (!isRedirect && !description?.attrs.content?.trim()) errors.push(`${file}: missing description`);
     for (const { node, attrs } of elements) {
       const metadata = node.tagName === "title" ? textContent(node) : node.tagName === "meta" ? attrs.content : "";
       if (metadata && /\$[^$]*\\[a-z]+/i.test(metadata)) errors.push(`${file}: raw LaTeX in metadata`);
 
-      const refreshTarget = attrs["http-equiv"]?.toLowerCase() === "refresh"
-        ? attrs.content?.match(/url\s*=\s*(.+)$/i)?.[1]
-        : undefined;
-      const target = refreshTarget ?? (["a", "link"].includes(node.tagName) ? attrs.href : attrs.src);
+      const target = refreshTarget(attrs) ?? (["a", "link"].includes(node.tagName) ? attrs.href : attrs.src);
       if (!target) continue;
-      let url;
-      try { url = new URL(target, new URL(route, base)); }
-      catch { errors.push(`${file}: invalid URL ${target}`); continue; }
-      if (url.origin !== base.origin) continue;
+      let url, pathname, anchor;
+      try {
+        url = new URL(target, new URL(route, base));
+        if (url.origin !== base.origin) continue;
+        pathname = decodeURIComponent(url.pathname);
+        anchor = decodeURIComponent(url.hash.slice(1));
+      } catch { errors.push(`${file}: invalid URL ${target}`); continue; }
       references++;
-      const destination = pages.get(url.pathname);
+      const destination = pageForPath(pathname);
       if (destination) {
-        if (url.hash && !destination.ids.has(decodeURIComponent(url.hash.slice(1)))) {
+        if (url.hash && !destination.ids.has(anchor)) {
           errors.push(`${file}: missing anchor ${target}`);
         }
-      } else if (!fs.existsSync(path.join(root, decodeURIComponent(url.pathname)))) {
-        errors.push(`${file}: missing target ${target}`);
+      } else {
+        // A directory alone is not a served page: it must have an index.html above.
+        const targetFile = path.join(root, pathname);
+        if (!fs.existsSync(targetFile) || !fs.statSync(targetFile).isFile()) {
+          errors.push(`${file}: missing target ${target}`);
+        }
       }
     }
   }

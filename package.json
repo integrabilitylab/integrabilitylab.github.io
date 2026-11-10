@@ -3,7 +3,7 @@
   "type": "module",
   "version": "0.0.1",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.19.0"
   },
   "scripts": {
     "dev": "astro dev",
@@ -13,7 +13,8 @@
     "check": "astro check",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "check:site": "node scripts/check-site.mjs",
-    "validate": "npm run check && npm test && npm run build && npm run check:site"
+    "audit": "npm audit --registry=https://registry.npmjs.org",
+    "validate": "npm run audit && npm run check && npm test && npm run build && npm run check:site"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
