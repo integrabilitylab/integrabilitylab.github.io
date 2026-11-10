@@ -9,5 +9,4 @@ interests:
   - "Quantum chaos"
 # avatar: "/images/yi-chao-liu.jpg"
 ---
-
-明月怜我不忍圆
+Real in Life, Real in Physics.
