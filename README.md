@@ -57,6 +57,9 @@ IDs, and invalid metadata. Pull requests to `dev` and `main`, and pushes to
   those fields cannot contain rendered HTML or MathML. No client math script or
   font download is required.
 - News, events, and lectures can set `language: "zh-CN"`; the default is `en`.
+- News and event entries follow the fixed structure and Markdown templates in
+  [`docs/news-and-events.md`](docs/news-and-events.md). Their titles, summaries,
+  metadata, images, and body spacing are handled by the shared layout.
 - Images remain in `public/images/` and are served as supplied.
 
 The site includes canonical URLs, social metadata, and a sitemap at

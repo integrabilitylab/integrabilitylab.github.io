@@ -31,23 +31,30 @@ const publications = defineCollection({
   }),
 });
 
+const contentTitle = z.string().min(1).max(120);
+const contentSummary = z.string().min(1).max(220);
+
 const datedContent = {
-  title: z.string(),
+  title: contentTitle,
   date: z.date(),
-  summary: z.string().optional(),
+  summary: contentSummary.optional(),
   language: z.enum(["en", "zh-CN"]).default("en"),
   image: z.string().optional(),
 };
 
 const news = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/news" }),
-  schema: z.object(datedContent),
+  schema: z.object({
+    ...datedContent,
+    summary: contentSummary,
+  }),
 });
 
 const events = defineCollection({
   loader: glob({ pattern: "**/*.md", base: "./src/content/events" }),
   schema: z.object({
     ...datedContent,
+    summary: contentSummary,
     location: z.string().optional(),
   }),
 });

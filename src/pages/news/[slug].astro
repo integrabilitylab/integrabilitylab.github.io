@@ -16,7 +16,13 @@ const { Content } = await render(item);
 const date = formatDate(item.data.date, "long");
 ---
 
-<ContentLayout title={item.data.title} description={item.data.summary} eyebrow={date} lang={item.data.language}>
-  {item.data.image && <img src={item.data.image} alt="" />}
+<ContentLayout
+  title={item.data.title}
+  description={item.data.summary}
+  eyebrow={date}
+  lang={item.data.language}
+  image={item.data.image}
+  imageAlt={item.data.image ? `${item.data.title} illustration` : undefined}
+>
   <Content />
 </ContentLayout>

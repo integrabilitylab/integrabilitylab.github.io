@@ -8,11 +8,22 @@ interface Props {
   metaDescription?: string;
   eyebrow?: string;
   lang?: "en" | "zh-CN";
+  image?: string;
+  imageAlt?: string;
   /** Use the full detail width instead of the centered reading column. */
   wide?: boolean;
 }
 
-const { title, description, metaDescription = description, eyebrow, lang, wide = false } = Astro.props;
+const {
+  title,
+  description,
+  metaDescription = description,
+  eyebrow,
+  lang,
+  image,
+  imageAlt = "",
+  wide = false,
+} = Astro.props;
 ---
 
 <BaseLayout title={title} description={metaDescription} lang={lang}>
@@ -20,7 +31,9 @@ const { title, description, metaDescription = description, eyebrow, lang, wide =
     {eyebrow && <p class="eyebrow">{eyebrow}</p>}
     <h1 class="page-title"><InlineMathText text={title} /></h1>
     {description && <p class="lead"><InlineMathText text={description} /></p>}
+    <slot name="meta" />
     <div class="prose section">
+      {image && <img class="content-image" src={image} alt={imageAlt} />}
       <slot />
     </div>
   </article>
@@ -36,23 +49,19 @@ const { title, description, metaDescription = description, eyebrow, lang, wide =
     width: min(var(--width-detail), calc(100% - 40px));
   }
 
-  /* Newspaper-style headline: the title may run past the text measure on the
-     right so long titles set in fuller lines, but the overhang is capped at
-     the gutter that actually exists beside the centered column (minus a 2rem
-     safety margin). Without this cap the widened title box overflows the
-     viewport and adds a horizontal scrollbar. 100% = the column width, so
-     (100vw - 100%) / 2 is the real gutter on each side. Below 860px the
-     column fills the screen and the overhang is dropped entirely. */
+  /* Keep headlines inside the reading column so long titles wrap rather than
+     extending into the page gutter as a single overlong line. */
   .reading-page:not(.wide) .page-title {
-    margin-right: max(-12ch, calc(-1 * ((100vw - 100%) / 2 - 2rem)));
+    max-width: 100%;
     font-size: clamp(2rem, 3.8vw, 2.6rem);
     line-height: 1.2;
   }
-  @media (max-width: 860px) {
-    .reading-page:not(.wide) .page-title { margin-right: 0; }
-  }
 
   .page-title { text-wrap: balance; }
+
+  .content-image {
+    margin-bottom: var(--space-4);
+  }
 
   .reading-page :global(.math) {
     display: inline-block;

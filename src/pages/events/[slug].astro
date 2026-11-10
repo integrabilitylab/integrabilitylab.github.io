@@ -16,8 +16,20 @@ const { Content } = await render(event);
 const date = formatDate(event.data.date, "long");
 ---
 
-<ContentLayout title={event.data.title} description={event.data.summary} eyebrow={date} lang={event.data.language}>
-  {event.data.location && <p class="meta">{event.data.location}</p>}
-  {event.data.image && <img src={event.data.image} alt="" />}
+<ContentLayout
+  title={event.data.title}
+  description={event.data.summary}
+  eyebrow={date}
+  lang={event.data.language}
+  image={event.data.image}
+  imageAlt={event.data.image ? `${event.data.title} poster` : undefined}
+>
+  {event.data.location && <p slot="meta" class="meta event-location">Location: {event.data.location}</p>}
   <Content />
 </ContentLayout>
+
+<style>
+  .event-location {
+    margin: 0.75rem 0 0;
+  }
+</style>
