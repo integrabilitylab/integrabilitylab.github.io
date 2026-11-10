@@ -1,5 +1,6 @@
 ---
-name: "LIU Yi-Chao（柳艺超）"
+name: "LIU Yi-Chao"
+chineseName: "柳艺超"
 role: "Ph.D. Student"
 category: students
 avatar: "/images/people/yi-chao-liu.jpg"

@@ -1,5 +1,6 @@
 ---
 name: "QIAN Xin"
+chineseName: "钱鑫"
 role: "Postdoctoral Researcher"
 category: "postdocs"
 avatar: "/images/people/qian-xin.jpg"

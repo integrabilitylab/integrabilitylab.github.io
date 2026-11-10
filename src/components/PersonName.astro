@@ -1,0 +1,17 @@
+---
+interface Props {
+  name: string;
+  chineseName?: string;
+}
+
+const { name, chineseName } = Astro.props;
+---
+
+<span class="person-name">
+  <span>{name}</span>{chineseName && <> <span class="chinese-name" lang="zh-CN">{chineseName}</span></>}
+</span>
+
+<style>
+  .person-name { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: .2em .7em; }
+  .chinese-name { white-space: nowrap; }
+</style>

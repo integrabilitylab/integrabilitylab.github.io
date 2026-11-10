@@ -28,7 +28,7 @@ const groups = [
         <section class="people-group" id={group.id} aria-labelledby={`${group.id}-title`}>
           <h2 id={`${group.id}-title`} class="group-title"><span aria-hidden="true">0{index + 1}</span>{group.title}</h2>
           {members.length > 0 ? (
-            <div class="grid two">{members.map(person => <PersonCard person={person} />)}</div>
+            <div class="grid people-list">{members.map(person => <PersonCard person={person} />)}</div>
           ) : (
             <p class="empty-group">Member profiles will be added soon.</p>
           )}
@@ -43,7 +43,7 @@ const groups = [
   .people-nav a { display:flex; gap:24px; align-items:center; font-size:.9rem; }
   .people-nav span { color:var(--muted); }
   .people-group { margin-top:44px; scroll-margin-top:24px; }
-  .people-group .grid.two { column-gap: 2.25rem; }
+  .people-list { grid-template-columns: minmax(0, 1fr); }
   .group-title { display:flex; gap:18px; align-items:baseline; margin:0 0 22px; font:normal 30px/1.2 Georgia,serif; }
   .group-title span { color:var(--muted); font:11px ui-monospace,monospace; }
   .empty-group { margin:0; padding:4px 0 16px; color:var(--muted); font-size:.95rem; }

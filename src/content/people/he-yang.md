@@ -1,5 +1,6 @@
 ---
 name: "HE Yang"
+chineseName: "何洋"
 role: "Ph.D. Student"
 category: students
 avatar: "/images/people/he-yang.jpg"

@@ -1,5 +1,6 @@
 ---
 name: "JIANG Yunfeng"
+chineseName: "江云峰"
 role: "Professor and Principal Investigator"
 category: faculty
 avatar: "/images/people/jiang-yunfeng.png"

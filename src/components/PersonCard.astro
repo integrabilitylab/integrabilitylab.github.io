@@ -1,10 +1,12 @@
 ---
 import InlineMathText from "./InlineMathText.astro";
+import PersonName from "./PersonName.astro";
 interface Props {
   person: {
     id: string;
     data: {
       name: string;
+      chineseName?: string;
       role: string;
       avatar?: string;
       interests?: string[];
@@ -13,16 +15,17 @@ interface Props {
 }
 
 const { person } = Astro.props;
+const fullName = [person.data.name, person.data.chineseName].filter(Boolean).join(" ");
 ---
 
 <article class:list={["person-card", { "no-portrait": !person.data.avatar }]}>
   {
     person.data.avatar && (
-      <img src={person.data.avatar} alt={`${person.data.name} portrait`} width="120" height="180" />
+      <img src={person.data.avatar} alt={`${fullName} portrait`} width="120" height="180" />
     )
   }
   <div class="identity">
-    <h3><a href={`/people/${person.id}/`}>{person.data.name}</a></h3>
+    <h3><a href={`/people/${person.id}/`}><PersonName name={person.data.name} chineseName={person.data.chineseName} /></a></h3>
     <p class="meta">{person.data.role}</p>
   </div>
   {

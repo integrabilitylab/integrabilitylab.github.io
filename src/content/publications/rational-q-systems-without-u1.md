@@ -11,5 +11,5 @@ summary: "An extension of rational Q-systems to integrable spin chains without U
 arxiv: "https://arxiv.org/abs/2512.01551"
 doi: "10.21468/SciPostPhys.20.6.175"
 inspireId: 3088144
-order: 3
+order: 5
 ---

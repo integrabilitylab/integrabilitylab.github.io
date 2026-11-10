@@ -1,22 +1,24 @@
 ---
 import { getCollection, render } from "astro:content";
 import InlineMathText from "../../components/InlineMathText.astro";
+import PersonName from "../../components/PersonName.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 export async function getStaticPaths() {
   return (await getCollection("people")).map(person => ({ params: { slug: person.id }, props: { person } }));
 }
 const { person } = Astro.props;
+const fullName = [person.data.name, person.data.chineseName].filter(Boolean).join(" ");
 const { Content, headings } = await render(person);
 const sections = headings.filter(heading => heading.depth === 2);
 ---
-<BaseLayout title={person.data.name} description={person.data.role}>
+<BaseLayout title={fullName} description={person.data.role}>
   <article class="container page profile">
     <a class="eyebrow profile-back" href="/people/">← People</a>
     <header class="profile-heading">
-      {person.data.avatar && <img class="profile-portrait" src={person.data.avatar} alt={`${person.data.name} portrait`} width="159" height="238" />}
+      {person.data.avatar && <img class="profile-portrait" src={person.data.avatar} alt={`${fullName} portrait`} width="159" height="238" />}
       <div class="profile-heading-copy">
         <p class="profile-category">{{ faculty: "Faculty", postdocs: "Postdoc", students: "Student", alumni: "Alumni" }[person.data.category]}</p>
-        <h1 class="page-title">{person.data.name}</h1>
+        <h1 class="page-title"><PersonName name={person.data.name} chineseName={person.data.chineseName} /></h1>
         <p class="lead">{person.data.role}</p>
       </div>
 
