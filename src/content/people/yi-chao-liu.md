@@ -7,6 +7,6 @@ interests:
   - "Q-system and its mathematical structure"
   - "Integrability in QCD"
   - "Quantum chaos"
-# avatar: "/images/yi-chao-liu.jpg"
+avatar: "/images/people/yi-chao-liu.png"
 ---
 Real in Life, Real in Physics.
